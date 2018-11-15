@@ -59,13 +59,9 @@ public class CollisionEngine {
             int actorTop = getActorTop(mover);
             int actorBottom = getActorBottom(mover);
             List<Tile> tiles = getCollidingTiles(actorTop, actorLeft, actorRight, actorBottom, mover.getX(), mover.getY());
-
             if (!tiles.isEmpty()) {
                 for (Tile tile : tiles) {
                     boolean resolved = resolve(mover, tile);
-//                    if(resolved) {
-//                        break;
-//                    }
                 }
             }
         }
@@ -82,10 +78,10 @@ public class CollisionEngine {
         int actorRight = getActorRight(mover);
         int actorTop = getActorTop(mover);
         int actorBottom = getActorBottom(mover);
-
+        
         return this.detect(mover, actorLeft, actorRight, actorTop, actorBottom);
     }
-
+    
     /**
      * This methode will detect if a Mover is overlapping with the tiles
      *
@@ -99,7 +95,7 @@ public class CollisionEngine {
     public boolean detect(Mover mover, int actorLeft, int actorRight, int actorTop, int actorBottom) {
         return !getCollidingTiles(actorTop, actorLeft, actorRight, actorBottom, mover.getX(), mover.getY()).isEmpty();
     }
-
+    
     /**
      * This methode will get all the tiles at the different x and y position
      *
@@ -113,7 +109,7 @@ public class CollisionEngine {
      */
     private List<Tile> getCollidingTiles(int top, int left, int right, int bottom, int midX, int midY) {
         List<Tile> tiles = new ArrayList<>();
-
+        
         if (tileEngine.checkTileSolid(left, top)) {
             Tile tile = tileEngine.getTileAtXY(left, top);
             tiles.add(tile);
@@ -160,9 +156,16 @@ public class CollisionEngine {
                 tiles.add(tile);
             }
         }
+        if (tileEngine.checkTileSolid(right, midY)) {
+            Tile tile = tileEngine.getTileAtXY(right, midY);
+            if (!tiles.contains(tile)) {
+                tiles.add(tile);
+            }
+        }
         return tiles;
     }
-
+   
+    
     /**
      * This methode will resolves the overlapping.
      *

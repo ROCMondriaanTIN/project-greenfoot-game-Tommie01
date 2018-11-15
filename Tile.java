@@ -8,6 +8,10 @@ import greenfoot.*;
 public class Tile extends Actor {
 
     public boolean isSolid = false;
+    public boolean isGoldCoin = false;
+    public boolean isSivlerCoin = false;
+    public boolean isDiamond = false;
+    public boolean isEnemy = false;
     private static int id;
     public int _id;
 

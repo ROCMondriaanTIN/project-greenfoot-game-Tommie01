@@ -38,7 +38,7 @@ public class Camera extends Actor {
         this.cameraDrag = 0.9;
         this.setImage(new GreenfootImage(1, 1));
     }
-
+    
     /**
      * The contructor of the Camera class Camera class moves the Tiles and Mover
      * classes around according to the camera position. Uses the tile engine to
@@ -63,7 +63,7 @@ public class Camera extends Actor {
         mover.setCamera(this);
         this.followActor = mover;
     }
-
+    
     @Override
     public void act() {
         dirX *= cameraDrag;
