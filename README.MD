@@ -54,3 +54,4 @@ Zo nu staat onze file in de git tree. Om er voor te zorgen dat ook andere mensen
 git push origin master
 ```
 Deze commando zorgt ervoor dat we van ons lokale origin de huidige brache de changes/commits gaan push'e naar de `master` op de server. Als er nog geen branche bestaat van de `master` op de server dan maakt hij deze aan.
+# CollectTheKey
