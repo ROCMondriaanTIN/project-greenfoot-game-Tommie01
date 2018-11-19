@@ -1,20 +1,18 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Key here.
+ * Write a description of class HUDDiamond here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Key extends Mover
+public class HUDDiamond extends Actor
 {
-
-    public Key(){
-        super();
-        setImage("keyYellow.png");
+    public HUDDiamond(){
+        setImage("hud_gem_blue.png");
     }
     public void act() 
     {
-        applyVelocity();
+        
     }    
 }

@@ -1,5 +1,4 @@
 
-
 import javax.swing.JOptionPane;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
@@ -16,7 +15,6 @@ public class MyWorld extends World {
     private int levelY;
     private int player = 1;
     private int levens = 2;
-    private int coins = 0;
     private int diamonds = 0;
     private boolean alive = true;
     private String debugCoins;
@@ -48,26 +46,27 @@ public class MyWorld extends World {
 
     @Override
     public void act() {
+        isDead();
+        endOfLevel();
         if(hr.inLevel == true){
             ce.update();
         }
         buttons();
         backToMenu();
-        isDead();
         hudUpdate();
         debug();
-        //System.out.println("Hr: " + hr.alive);
+        //System.out.println(getObjects(Hero.class).isEmpty());
     }
 
     public void debug(){
         if(debug == true){
             if(Greenfoot.isKeyDown("k")){
-                removeObjects(getObjects(Mover.class));
+                hr.alive = false;
                 Greenfoot.delay(10);
             }
             if(Greenfoot.isKeyDown("m")){
                 debugCoins = JOptionPane.showInputDialog(null, "Debug coins");
-                coins = Integer.parseInt(debugCoins);
+                hr.coins = Integer.parseInt(debugCoins);
                 Greenfoot.delay(10);
             }
         }
@@ -77,6 +76,12 @@ public class MyWorld extends World {
         if(Greenfoot.isKeyDown("escape")){
             clearScreen();
             startScreen();
+        }
+    }
+
+    public void checkIfRemoveKey(){
+        if(hr.hasKey == true){
+            removeObjects(getObjects(Key.class));
         }
     }
 
@@ -95,12 +100,12 @@ public class MyWorld extends World {
             Greenfoot.stop();
         }
         if(debug == true){
-        if(Greenfoot.mouseClicked(debugLvlBtn)){
-            level = 0;
-            clearScreen();
-            characterMenu();
+            if(Greenfoot.mouseClicked(debugLvlBtn)){
+                level = 0;
+                clearScreen();
+                characterMenu();
+            }
         }
-    }
         if(Greenfoot.mouseClicked(lvl1Btn)){
             level = 1;
             clearScreen();
@@ -155,51 +160,76 @@ public class MyWorld extends World {
             levelGenerator();
         }
     }
-    
+
     public void isDead(){
         if(hr.inLevel == true){
-            if(hr.alive == false || getObjects(Hero.class).isEmpty()){
-                    System.out.println("1");
-                    hr.inLevel = false;
-                    if(levens == 1){
-                        gameOver();
-                        alive = true;
-                    }
-                    else{
-                        System.out.println("2");
-                        levens --;
-                        clearScreen();
-                        levelGenerator();
-                        alive = true;
-                    }
+            if(hr.alive == false){
+                hr.inLevel = false;
+                if(levens == 1){
+                    gameOver();
+                    level = 0;
+                    maxLevel = 0;
+                    alive = true;
+                }
+                else{
+                    levens --;
+                    clearScreen();
+                    levelGenerator();
+                    alive = true;
                 }
             }
         }
+    }
+
+    public void endOfLevel(){
+        if(hr.isTouchingDoor == true){
+            if(hr.hasKey == true){
+                clearScreen();
+                hr.isTouchingDoor = false;
+                levens = 2;
+                if(level <= 3){
+                    level ++;
+                }
+                maxLevel ++;
+                levelSelector();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "De deur is nog op slot je moet een sleutel vinden",
+                    "", JOptionPane.WARNING_MESSAGE);
+                hr.isTouchingDoor = false;    
+            }
+        }
+    }
 
     public void hud(){
         if(hr.inLevel == true){
             for (int i = 0; i < levens; i ++){
                 addObject(new HUDLives(), (50 + (i * 15)), 40);
             }
-            if(coins >= 1 && coins <= 10){
-                for (int i = 0; i < coins; i ++){
+            for (int i = 0; i < hr.coins; i ++){
+                if(i <= 9){
                     addObject(new HUDCoins(), (50 + (i * 15)), 100);
                 }
-            }
-            else if(coins >= 1 && coins <= 20){
-                for (int i = 0; i < (coins - 10); i ++){
-                    addObject(new HUDCoins(), (50 + (i * 15)), 160);
+                else if(i >= 10 && i < 20){
+                    addObject(new HUDCoins(), (50 + ((i * 15) - 150)), 160);
+                }
+                else if(i >= 20 && i < 30){
+                    addObject(new HUDCoins(), (50 + ((i * 15) - 300)), 220);
+                }
+                else if(i >= 30 && i < 40){
+                    addObject(new HUDCoins(), (50 + ((i * 15) - 450)), 280);
                 }
             }
-            else if(coins >= 1 && coins <= 30){
-                for (int i = 0; i < (coins - 20); i ++){
-                    addObject(new HUDCoins(), (50 + (i * 15)), 220);
-                }
+            if(hr.hasDiamond == true){
+                addObject(new HUDDiamond(), 65, 340);
+                removeObjects(getObjects(Diamond.class));
             }
-            else if(coins >= 1 && coins <= 40){
-                for (int i = 0; i < (coins - 30); i ++){
-                    addObject(new HUDCoins(), (50 + (i * 15)), 280);
-                }
+            if(hr.hasKey == true){
+                addObject(new HUDKey("hud_keyYellow.png"), 65, 400);
+                removeObjects(getObjects(Key.class));
+            }
+            else{
+                addObject(new HUDKey("hud_keyYellow_disabled.png"), 65, 400);
             }
         }
     }
@@ -209,10 +239,19 @@ public class MyWorld extends World {
             removeObjects(getObjects(HUDLives.class));
             hud();
         }
-        if(getObjects(HUDCoins.class).size() != levens){
+        if(getObjects(HUDCoins.class).size() != hr.coins){
             removeObjects(getObjects(HUDCoins.class));
             hud();
         }
+        if(getObjects(HUDDiamond.class).size() != levens){
+            removeObjects(getObjects(HUDDiamond.class));
+            hud();
+        }
+        //Nu niet nodig misschien later nog
+        /*if(getObjects(HUDKey.class).size() == 0){
+        removeObjects(getObjects(HUDKey.class));
+        hud();
+        }*/
     }
 
     public void gameOver(){
@@ -226,7 +265,7 @@ public class MyWorld extends World {
         showText("Begin Scherm", 250, 600);
         player = 1;
         levens = 2;
-        coins = 0;
+        hr.coins = 0;
         diamonds = 0;
         maxLevel = 1;
         level = 0;
@@ -242,6 +281,7 @@ public class MyWorld extends World {
     }
 
     public void startScreen(){
+        clearScreen();
         this.setBackground("bg2.png");
         addObject(logo, 500, 200);
         addObject(qtBtn, 100, 700);
@@ -250,12 +290,14 @@ public class MyWorld extends World {
         showText("Level kiezen", 250, 600);
     }
 
-    //If it looks stupid but it works it ain't stupid
+    //If it looks stupid but it works it ain't stupid but is 
     public void clearScreen(){
         hr.inLevel = false;
         removeObjects(getObjects(HUDLives.class));
+        removeObjects(getObjects(HUDKey.class));
         removeObjects(getObjects(HUDCoins.class));
         removeObjects(getObjects(Key.class));
+        removeObjects(getObjects(Diamond.class));
         removeObjects(getObjects(StartButton.class));
         removeObjects(getObjects(LevelSelectorButton.class));
         removeObjects(getObjects(QuitButton.class));
@@ -265,6 +307,10 @@ public class MyWorld extends World {
         removeObjects(getObjects(LevelButton.class));
         removeObjects(getObjects(Logo.class));
         removeObjects(getObjects(HeroPicker.class));
+        removeObjects(getObjects(SilverCoin.class));
+        removeObjects(getObjects(GoldCoin.class));
+        removeObjects(getObjects(Diamond.class));
+        removeObjects(getObjects(Fireball.class));
         showText("", 250, 600);
         showText("", 235, 700);
         showText("", 250, 500);
@@ -306,7 +352,9 @@ public class MyWorld extends World {
     }
 
     public void levelGenerator(){
+        hr.hasKey = false;
         hud();
+        hr.alive = true;
         this.setBackground("bg.png");
         int[][] map = {
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -317,21 +365,21 @@ public class MyWorld extends World {
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,582,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,583,-1,-1,-1,-1,140,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,244,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,244,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,140,140,-1,-1,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,12,-1,243,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,583,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,583,-1,-1,-1,140,140,140,140,8,8,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,8,8,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,14,-1,-1,-1,-1,-1,-1,-1,611,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,8,8,8,8,5,5,5,5,5,5,8,8,8,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,8,8,-1,-1,-1,-1,-1,-1,-1,-1,583,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,8,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,611,-1,-1,-1,-1,1,6,6,-1,-1,-1,-1,-1,-1,-1,140,140,140,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,8,8,8,8,8,8,8,6,6,-1,-1,-1,-1,611,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,613,-1,-1,-1,-1,-1,-1,-1,14,-1,-1,-1,-1,-1,-1,6,6,6,6,6,6,6,6,6,-1,-1,-1,8,8,8,8,8,8,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,204,204,204,204,11,11,0,0,0,11,11,0,0,11,11,6,6,6,6,6,6,6,6,6,11,11,11,250,250,250,250,250,250,11,11,6,6,6,279,279,279,279,279,279,280,280,280,280,280,280,280,280},
-                {-1,-1,6,6,6,6,-1,-1,44,-1,-1,-1,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,250,250,250,250,250,250,10,10,6,6,6,278,278,278,278,278,278,278,278,278,278,278,278,278,278},
+                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,250,250,250,250,250,250,10,10,6,6,6,278,278,278,278,278,278,278,278,278,278,278,278,278,278},
                 {-1,-1,6,6,6,6,11,1,1,1,1,11,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,278,278,278,278,278,278,278,278,278,278,278,278,278,278},
                 {10,10,6,6,6,6,10,10,10,10,10,10,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,10,10,10,10,10,10,10,10,10,10,10,10,10,10},
                 {10,10,6,6,6,6,10,10,10,10,10,10,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,10,10,10,10,10,10,10,10,10,10,10,10,10,10},
@@ -344,8 +392,6 @@ public class MyWorld extends World {
 
             };
         Hero hero = new Hero(hr.player);
-        Key key = new Key();
-        addObject(key, 180, 550);
         TileEngine te = new TileEngine(this, 60, 60, map);
         Camera camera = new Camera(te);
         camera.follow(hero);
@@ -353,18 +399,28 @@ public class MyWorld extends World {
         ce = new CollisionEngine(te, camera);
         ce.addCollidingMover(hero);
         addObject(hero, 300, 900);
+        addObject(new Diamond(), 543,1332);
+        addObject(new Key(), 180, 550);
+        addObject(new Fireball(), 843,870);
+        addObject(new SilverCoin(), 1135,1212);
+        addObject(new SilverCoin(), 1741,852);
+        addObject(new SilverCoin(), 1323,672);
+        addObject(new SilverCoin(), 895,492);
+        addObject(new GoldCoin(), 2191,672);
+        addObject(new GoldCoin(), 2487,852);
+        addObject(new Enemy(), 1343, 710);
         hr.inLevel = true;
         /*switch(level){
-            case 0: Debug debug = new Debug();
-            break;
-            case 1: Level1 lvl1 = new Level1();
-            break;
-            case 2: Level2 lvl2 = new Level2();
-            break;
-            case 3: Level3 lvl3 = new Level3();
-            break;
-            case 4: Level4 lvl4 = new Level4();
-            break;
+        case 0: Debug debug = new Debug();
+        break;
+        case 1: Level1 lvl1 = new Level1();
+        break;
+        case 2: Level2 lvl2 = new Level2();
+        break;
+        case 3: Level3 lvl3 = new Level3();
+        break;
+        case 4: Level4 lvl4 = new Level4();
+        break;
 
         }*/
     }
