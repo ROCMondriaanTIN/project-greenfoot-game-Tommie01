@@ -16,6 +16,6 @@ public class LevelSelectorButton extends Actor
     {
     }   
     LevelSelectorButton(){
-        
+        setImage("button_level-kiezen.png");
     }
 }

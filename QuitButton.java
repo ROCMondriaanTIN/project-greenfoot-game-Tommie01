@@ -17,6 +17,6 @@ public class QuitButton extends Actor
        
     }
     public QuitButton(){
-        
+        setImage("button_stop.png");
     }
 }

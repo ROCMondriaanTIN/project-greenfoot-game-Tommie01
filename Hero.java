@@ -1,4 +1,5 @@
 
+
 import greenfoot.*;
 
 /**
@@ -18,6 +19,7 @@ public class Hero extends Mover {
     public static boolean hasKey = false;
     public static boolean hasDiamond = false;
     public static boolean isTouchingDoor = false;
+    public static int diamonds = 0;
     public static int coins = 0;
     private GreenfootImage jump1 = new GreenfootImage("p1_jump.png");
     private GreenfootImage jump2 = new GreenfootImage("p1_jump.png");
@@ -30,6 +32,8 @@ public class Hero extends Mover {
         gravity = 9.8;
         acc = 0.6;
         drag = 0.8;
+        onGround = false;
+        onGround = true;
         switch(player){
 
             case 1: setImage("p1_front.png");
@@ -56,12 +60,9 @@ public class Hero extends Mover {
             Greenfoot.delay(10);
             cntr ++;
         }
-        touchingDiamond();
         handleInput();
-        touchingKey();
+        touching();
         touchingDoor();
-        touchingSilverCoin();
-        touchingGoldCoin();
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -70,7 +71,7 @@ public class Hero extends Mover {
         applyVelocity();
         removeOrNotRemove();
     }
-
+    
     public void touchingDoor(){
         for (Actor door : getIntersectingObjects(DoorTile.class)) {
             if (door != null) {
@@ -83,29 +84,22 @@ public class Hero extends Mover {
         }
     }
 
-    public void touchingKey(){
+    public void touching(){
         if(isTouching(Key.class)){
+            removeTouching(Key.class);
             hasKey = true;
         }
-    }
-
-    public void touchingDiamond(){
-        if(isTouching(Diamond.class)){
-            hasDiamond = true;
-        }
-    }
-    
-    public void touchingGoldCoin(){
         if(isTouching(GoldCoin.class)){
             removeTouching(GoldCoin.class);
             coins += 2;
         }
-    }
-    
-    public void touchingSilverCoin(){
         if(isTouching(SilverCoin.class)){
             removeTouching(SilverCoin.class);
             coins ++;
+        }
+        if(isTouching(Diamond.class)){
+            removeTouching(Diamond.class);
+            diamonds ++;
         }
     }
     
@@ -121,6 +115,13 @@ public class Hero extends Mover {
         }
         if(inLevel == true){
             if(isTouching(Fireball.class)){
+                getWorld().removeObject(this);
+                alive = false;
+                return;
+            }
+        }
+        if(inLevel == true){
+            if(isTouching(Enemy.class)){
                 getWorld().removeObject(this);
                 alive = false;
                 return;

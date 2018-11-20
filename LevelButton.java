@@ -8,12 +8,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class LevelButton extends Actor
 {
-    /**
-     * Act - do whatever the LevelButton wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    public LevelButton(){
-     setImage("castleCenter_rounded.png");   
+    public LevelButton(String image){
+     setImage(image);   
     }
     public void act() 
     {

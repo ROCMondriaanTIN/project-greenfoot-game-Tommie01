@@ -1,61 +1,39 @@
 
 import javax.swing.JOptionPane;
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-/**
- *
- * @author R. Springer
- */
+import greenfoot.*;
+
 public class MyWorld extends World {
 
     private final boolean debug = true;
     private CollisionEngine ce;
     private static int level = 1;
-    private static int maxLevel = 1;
-    private int levelX;
-    private int levelY;
-    private int player = 1;
-    private int levens = 2;
-    private int diamonds = 0;
+    private static int maxLevel = 4;
+    private static int player = 1;
+    private static int levens = 2;
     private boolean alive = true;
-    private String debugCoins;
     StartButton strtBtn = new StartButton();
     QuitButton qtBtn = new QuitButton();
     LevelSelectorButton lvlSelectBtn = new LevelSelectorButton();
-    LevelButton lvl1Btn = new LevelButton();
-    LevelButton lvl2Btn = new LevelButton();
-    LevelButton lvl3Btn = new LevelButton();
-    LevelButton lvl4Btn = new LevelButton();
-    LevelButton debugLvlBtn = new LevelButton();
+    LevelButton lvl1Btn = new LevelButton("button_level1.png");
+    LevelButton lvl2Btn = new LevelButton("button_level2_lck.png");
+    LevelButton lvl3Btn = new LevelButton("button_level3_lck.png");
+    LevelButton lvl4Btn = new LevelButton("button_level4_lck.png");
+    LevelButton debugLvlBtn = new LevelButton("button_debug.png");
     Hero hr = new Hero();
     HeroPicker h1 = new HeroPicker(1);
     HeroPicker h2 = new HeroPicker(2);
     HeroPicker h3 = new HeroPicker(3);
-    Logo logo = new Logo();
 
-    /**
-     * Constructor for objects of class MyWorld.
-     *
-     */
     public MyWorld() {
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1000, 800, 1, false);
-        //levelGenerator();
         startScreen();
         hr.inLevel = false;
     }
 
     @Override
     public void act() {
-        isDead();
-        endOfLevel();
-        if(hr.inLevel == true){
-            ce.update();
-        }
         buttons();
         backToMenu();
-        hudUpdate();
-        debug();
-        //System.out.println(getObjects(Hero.class).isEmpty());
     }
 
     public void debug(){
@@ -65,8 +43,17 @@ public class MyWorld extends World {
                 Greenfoot.delay(10);
             }
             if(Greenfoot.isKeyDown("m")){
-                debugCoins = JOptionPane.showInputDialog(null, "Debug coins");
+                String debugCoins = JOptionPane.showInputDialog(null, "Debug coins");
                 hr.coins = Integer.parseInt(debugCoins);
+                Greenfoot.delay(10);
+            }
+            if(Greenfoot.isKeyDown("n")){
+                String debugDiamonds = JOptionPane.showInputDialog(null, "Debug diamonds");
+                hr.diamonds = Integer.parseInt(debugDiamonds);
+                Greenfoot.delay(10);
+            }
+            if(Greenfoot.isKeyDown("b")){
+                hr.hasKey = true;
                 Greenfoot.delay(10);
             }
         }
@@ -79,9 +66,10 @@ public class MyWorld extends World {
         }
     }
 
-    public void checkIfRemoveKey(){
-        if(hr.hasKey == true){
-            removeObjects(getObjects(Key.class));
+    public void newLife(){
+        if(hr.coins >= 40){
+            hr.coins = 0;
+            levens ++;
         }
     }
 
@@ -220,16 +208,15 @@ public class MyWorld extends World {
                     addObject(new HUDCoins(), (50 + ((i * 15) - 450)), 280);
                 }
             }
-            if(hr.hasDiamond == true){
-                addObject(new HUDDiamond(), 65, 340);
-                removeObjects(getObjects(Diamond.class));
+            for (int i = 0; i < hr.diamonds; i ++){
+                addObject(new HUDDiamond(), (50 + (i * 15)), 340);
             }
             if(hr.hasKey == true){
-                addObject(new HUDKey("hud_keyYellow.png"), 65, 400);
+                addObject(new HUDKey("hud_keyYellow.png"), 50, 400);
                 removeObjects(getObjects(Key.class));
             }
             else{
-                addObject(new HUDKey("hud_keyYellow_disabled.png"), 65, 400);
+                addObject(new HUDKey("hud_keyYellow_disabled.png"), 50, 400);
             }
         }
     }
@@ -243,7 +230,7 @@ public class MyWorld extends World {
             removeObjects(getObjects(HUDCoins.class));
             hud();
         }
-        if(getObjects(HUDDiamond.class).size() != levens){
+        if(getObjects(HUDDiamond.class).size() != hr.diamonds){
             removeObjects(getObjects(HUDDiamond.class));
             hud();
         }
@@ -256,24 +243,19 @@ public class MyWorld extends World {
 
     public void gameOver(){
         clearScreen();
-        setBackground("bg.png");
-        showText("Hahaha je bent dood", 500, 400);
-        addObject(logo, 500, 200);
+        setBackground("gameOverScreen.png");
         addObject(qtBtn, 100, 700);
-        showText("Stoppen", 235, 700);
         addObject(strtBtn, 100, 600);
-        showText("Begin Scherm", 250, 600);
         player = 1;
         levens = 2;
         hr.coins = 0;
-        diamonds = 0;
+        hr.diamonds = 0;
         maxLevel = 1;
         level = 0;
     }
 
     public void characterMenu(){
         this.setBackground("bg2.png");
-        addObject(logo, 500, 200);
         showText("Kies een speler", 100, 400);
         addObject(h1, 100, 500);
         addObject(h2, 100, 700);
@@ -283,14 +265,10 @@ public class MyWorld extends World {
     public void startScreen(){
         clearScreen();
         this.setBackground("bg2.png");
-        addObject(logo, 500, 200);
-        addObject(qtBtn, 100, 700);
-        showText("Stoppen", 235, 700);
-        addObject(lvlSelectBtn, 100, 600);
-        showText("Level kiezen", 250, 600);
+        addObject(qtBtn, 150, 700);
+        addObject(lvlSelectBtn, 150, 600);
     }
 
-    //If it looks stupid but it works it ain't stupid but is 
     public void clearScreen(){
         hr.inLevel = false;
         removeObjects(getObjects(HUDLives.class));
@@ -305,21 +283,14 @@ public class MyWorld extends World {
         removeObjects(getObjects(Tile.class));
         removeObjects(getObjects(Enemy.class));
         removeObjects(getObjects(LevelButton.class));
-        removeObjects(getObjects(Logo.class));
         removeObjects(getObjects(HeroPicker.class));
         removeObjects(getObjects(SilverCoin.class));
         removeObjects(getObjects(GoldCoin.class));
         removeObjects(getObjects(Diamond.class));
+        removeObjects(getObjects(HUDDiamond.class));
         removeObjects(getObjects(Fireball.class));
-        showText("", 250, 600);
-        showText("", 235, 700);
-        showText("", 250, 500);
-        showText("", 200, 500);
-        showText("", 200, 700);
-        showText("", 700, 500);
-        showText("", 700, 700);
+        showText("", 100, 500);
         showText("", 100, 400);
-        showText("", 500, 400);
     }
 
     public void levelSelector(){
@@ -327,101 +298,37 @@ public class MyWorld extends World {
         if(debug == true){
             addObject(debugLvlBtn, 100, 300);
         }
-        addObject(logo, 500, 200);
-        showText("Kies een level", 100, 400);
-        addObject(lvl1Btn, 100, 500);
-        showText("Level 1", 200, 500);
+        showText("Kies een level", 100, 500);
+        addObject(lvl1Btn, 100, 600);
         addObject(lvl2Btn, 100, 700);
-        showText("Level 2", 200, 700);
-        addObject(lvl3Btn, 600, 500);
-        showText("Level 3", 700, 500);
-        addObject(lvl4Btn, 600, 700);
-        showText("Level 4", 700, 700);
+        addObject(lvl3Btn, 300, 600);
+        addObject(lvl4Btn, 300, 700);
         switch(maxLevel){
-
-            case 1: lvl1Btn.setImage("grass.png");   
+            case 1: lvl1Btn.setImage("button_level1.png");   
             break;
-            case 2: lvl1Btn.setImage("grass.png"); lvl2Btn.setImage("grass.png");
+            case 2: lvl1Btn.setImage("button_level1.png"); lvl2Btn.setImage("button_level2.png");
             break;
-            case 3: lvl1Btn.setImage("grass.png"); lvl2Btn.setImage("grass.png");   
-            lvl3Btn.setImage("grass.png");   break;
-            case 4: lvl1Btn.setImage("grass.png"); lvl2Btn.setImage("grass.png"); 
-            lvl3Btn.setImage("grass.png"); lvl4Btn.setImage("grass.png"); 
+            case 3: lvl1Btn.setImage("button_level1.png"); lvl2Btn.setImage("button_level2.png");  
+            lvl3Btn.setImage("button_level3.png");   break;
+            case 4: lvl1Btn.setImage("button_level1.png"); lvl2Btn.setImage("button_level2.png");  
+            lvl3Btn.setImage("button_level3.png"); lvl4Btn.setImage("button_level4.png"); 
             break;
         }
     }
 
     public void levelGenerator(){
-        hr.hasKey = false;
-        hud();
-        hr.alive = true;
-        this.setBackground("bg.png");
-        int[][] map = {
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,244,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,140,140,-1,-1,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,12,-1,243,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,8,8,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,-1,-1,14,-1,-1,-1,-1,-1,-1,-1,611,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,8,8,8,8,5,5,5,5,5,5,8,8,8,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,140,-1,-1,-1,-1,-1,-1,-1,-1,-1,140,140,140,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,8,8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,611,-1,-1,-1,-1,1,6,6,-1,-1,-1,-1,-1,-1,-1,140,140,140,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,8,8,8,8,8,8,8,6,6,-1,-1,-1,-1,611,-1,-1,-1,-1,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,613,-1,-1,-1,-1,-1,-1,-1,14,-1,-1,-1,-1,-1,-1,6,6,6,6,6,6,6,6,6,-1,-1,-1,8,8,8,8,8,8,-1,-1,6,6,6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,204,204,204,204,11,11,0,0,0,11,11,0,0,11,11,6,6,6,6,6,6,6,6,6,11,11,11,250,250,250,250,250,250,11,11,6,6,6,279,279,279,279,279,279,280,280,280,280,280,280,280,280},
-                {-1,-1,6,6,6,6,-1,-1,-1,-1,-1,-1,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,250,250,250,250,250,250,10,10,6,6,6,278,278,278,278,278,278,278,278,278,278,278,278,278,278},
-                {-1,-1,6,6,6,6,11,1,1,1,1,11,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,278,278,278,278,278,278,278,278,278,278,278,278,278,278},
-                {10,10,6,6,6,6,10,10,10,10,10,10,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,10,10,10,10,10,10,10,10,10,10,10,10,10,10},
-                {10,10,6,6,6,6,10,10,10,10,10,10,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,10,10,10,10,10,10,10,10,10,10,10,10,10,10},
-                {10,10,6,6,6,6,10,10,10,10,10,10,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,10,10,10,10,10,10,10,10,10,10,10,10,10,10},
-                {10,10,6,6,6,6,10,10,10,10,10,10,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,10,10,10,10,10,10,10,10,10,10,10,10,10,10},
-                {10,10,6,6,6,6,10,10,10,10,10,10,204,204,204,204,10,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,10,10,10,6,6,6,6,6,6,10,10,6,6,6,10,10,10,10,10,10,10,10,10,10,10,10,10,10},
-                {204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204},
-                {204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204},
-                {204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204},
+        switch(level){
+            case 0: Greenfoot.setWorld(new Debug());
+            break;
+            case 1: Greenfoot.setWorld(new Level1());
+            break;
+            case 2: Greenfoot.setWorld(new Level2());
+            break;
+            case 3: Level3 lvl3 = new Level3();
+            break;
+            case 4: Level4 lvl4 = new Level4();
+            break;
 
-            };
-        Hero hero = new Hero(hr.player);
-        TileEngine te = new TileEngine(this, 60, 60, map);
-        Camera camera = new Camera(te);
-        camera.follow(hero);
-        addObject(camera, 0, 0);
-        ce = new CollisionEngine(te, camera);
-        ce.addCollidingMover(hero);
-        addObject(hero, 300, 900);
-        addObject(new Diamond(), 543,1332);
-        addObject(new Key(), 180, 550);
-        addObject(new Fireball(), 843,870);
-        addObject(new SilverCoin(), 1135,1212);
-        addObject(new SilverCoin(), 1741,852);
-        addObject(new SilverCoin(), 1323,672);
-        addObject(new SilverCoin(), 895,492);
-        addObject(new GoldCoin(), 2191,672);
-        addObject(new GoldCoin(), 2487,852);
-        addObject(new Enemy(), 1343, 710);
-        hr.inLevel = true;
-        /*switch(level){
-        case 0: Debug debug = new Debug();
-        break;
-        case 1: Level1 lvl1 = new Level1();
-        break;
-        case 2: Level2 lvl2 = new Level2();
-        break;
-        case 3: Level3 lvl3 = new Level3();
-        break;
-        case 4: Level4 lvl4 = new Level4();
-        break;
-
-        }*/
+        }
     }
 }
