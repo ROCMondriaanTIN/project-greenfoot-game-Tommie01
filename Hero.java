@@ -63,6 +63,7 @@ public class Hero extends Mover {
         handleInput();
         touching();
         touchingDoor();
+        platformCollision();
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -128,7 +129,14 @@ public class Hero extends Mover {
             }
         }
     }
-
+    
+    public void platformCollision(){
+        if(isTouching(Platform.class)){
+            setLocation(getX(), getY() - 11);
+            onGround = true;
+        }
+    }
+    
     public void handleInput() {
         if (Greenfoot.isKeyDown("space")) {
             if(onGround == true){
