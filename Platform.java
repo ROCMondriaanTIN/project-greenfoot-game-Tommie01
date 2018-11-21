@@ -17,14 +17,18 @@ public class Platform extends Mover
         this.walkRange = walkrange; //default 250
         this.getal = getal;
         firstAct = true;
-        speed = 1;
+        speed = 2;
     }
     
     public void act() 
     {
+        Movement();
+    }    
+    
+    public void Movement(){
         int x = getX();
         int y = getY();
-
+        
         if(getal == 1){
             if (firstAct) {
                 firstAct = false;
@@ -58,5 +62,5 @@ public class Platform extends Mover
                 x = xMin;
             }
         }
-    }    
+    }
 }

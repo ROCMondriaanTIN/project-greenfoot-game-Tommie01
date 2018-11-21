@@ -80,7 +80,7 @@ public class Level2 extends MyWorld
         addObject(new Enemy(), 1836,645);
         addObject(new Enemy(), 2141, 1245);
         addObject(new Fireball(), 1893, 270);
-        if(hr.diamonds == 1 || hr.diamonds == 0){
+        if(hr.diamonds != 2){
             addObject(new Diamond(), 329,192);
         }
         hud();
