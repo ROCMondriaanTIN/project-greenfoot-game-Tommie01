@@ -11,7 +11,7 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
-    private int cntr = 0;
+    private static int cntr = 0;
     private static int heroX;
     public static int player;
     private boolean onGround = true;
@@ -21,9 +21,6 @@ public class Hero extends Mover {
     public static boolean isTouchingDoor = false;
     public static int diamonds = 0;
     public static int coins = 0;
-    private GreenfootImage jump1 = new GreenfootImage("p1_jump.png");
-    private GreenfootImage jump2 = new GreenfootImage("p1_jump.png");
-    private GreenfootImage jump3 = new GreenfootImage("p1_jump.png");
 
     public Hero(int player) {
         super();
@@ -56,7 +53,7 @@ public class Hero extends Mover {
     @Override
     public void act() {
         if(Greenfoot.isKeyDown("l")){
-            System.out.println(cntr + ":" + getX() + "," + getY());
+            System.out.println(cntr + ":" + getX() + ", " + getY());
             Greenfoot.delay(10);
             cntr ++;
         }
@@ -140,18 +137,18 @@ public class Hero extends Mover {
     public void handleInput() {
         if (Greenfoot.isKeyDown("space")) {
             if(onGround == true){
-                velocityY = -15;
+                velocityY = -13;
             }
         }
 
-        if(inLevel == true){
+        /*if(inLevel == true){
             if(isTouching(Tile.class) == false){
                 onGround = false;
             }
             else{
                 onGround = true;
             }
-        }
+        }*/
 
         if (Greenfoot.isKeyDown("left")) {
             velocityX = -6;

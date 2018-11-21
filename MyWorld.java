@@ -4,7 +4,7 @@ import greenfoot.*;
 
 public class MyWorld extends World {
 
-    private final boolean debug = true;
+    private final boolean debug = false;
     private CollisionEngine ce;
     private static int level = 1;
     private static int maxLevel = 4;
@@ -26,6 +26,7 @@ public class MyWorld extends World {
 
     public MyWorld() {
         super(1000, 800, 1, false);
+        Greenfoot.start();
         startScreen();
         hr.inLevel = false;
     }
@@ -34,6 +35,7 @@ public class MyWorld extends World {
     public void act() {
         buttons();
         backToMenu();
+        debug();
     }
 
     public void debug(){
@@ -56,6 +58,7 @@ public class MyWorld extends World {
                 hr.hasKey = true;
                 Greenfoot.delay(10);
             }
+            maxLevel = 4;
         }
     }
 
@@ -153,10 +156,10 @@ public class MyWorld extends World {
         if(hr.inLevel == true){
             if(hr.alive == false){
                 hr.inLevel = false;
-                if(levens == 1){
+                if(levens == 0){
                     gameOver();
-                    level = 0;
-                    maxLevel = 0;
+                    level = 1;
+                    maxLevel = 1;
                     alive = true;
                 }
                 else{
@@ -178,7 +181,9 @@ public class MyWorld extends World {
                 if(level <= 3){
                     level ++;
                 }
-                maxLevel ++;
+                if(maxLevel <= 3){
+                    maxLevel ++;
+                }
                 levelSelector();
             }
             else{
@@ -234,11 +239,10 @@ public class MyWorld extends World {
             removeObjects(getObjects(HUDDiamond.class));
             hud();
         }
-        //Nu niet nodig misschien later nog
-        /*if(getObjects(HUDKey.class).size() == 0){
-        removeObjects(getObjects(HUDKey.class));
-        hud();
-        }*/
+        if(getObjects(HUDKey.class).size() == 0 || hr.hasKey == true){
+            removeObjects(getObjects(HUDKey.class));
+            hud();
+        }
     }
 
     public void gameOver(){
@@ -269,6 +273,7 @@ public class MyWorld extends World {
         addObject(lvlSelectBtn, 150, 600);
     }
 
+    //if it looks stupid but it works it aint stupid
     public void clearScreen(){
         hr.inLevel = false;
         removeObjects(getObjects(HUDLives.class));
@@ -324,7 +329,7 @@ public class MyWorld extends World {
             break;
             case 2: Greenfoot.setWorld(new Level2());
             break;
-            case 3: Level3 lvl3 = new Level3();
+            case 3: Greenfoot.setWorld(new Level3());
             break;
             case 4: Level4 lvl4 = new Level4();
             break;

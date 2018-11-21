@@ -23,7 +23,6 @@ public class Level1 extends MyWorld
     {   
         clearScreen();
         hr.inLevel = true;
-        hud();
         hr.hasKey = false;
         hr.alive = true;
         this.setBackground("bg1.png");
@@ -83,5 +82,6 @@ public class Level1 extends MyWorld
         addObject(new GoldCoin(), 2487,852);
         addObject(new Enemy(), 1343, 710);
         addObject(new Enemy(), 502,580);
+        hud();
     }
 }
