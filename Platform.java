@@ -17,7 +17,7 @@ public class Platform extends Mover
         this.walkRange = walkrange; //default 250
         this.getal = getal;
         firstAct = true;
-        speed = 2;
+        speed = 1;
     }
     
     public void act() 

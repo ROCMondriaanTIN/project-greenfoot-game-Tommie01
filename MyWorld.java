@@ -4,13 +4,14 @@ import greenfoot.*;
 
 public class MyWorld extends World {
 
-    private final boolean debug = false;
+    private final boolean debug = true;
     private CollisionEngine ce;
     private static int level = 1;
     private static int maxLevel = 4;
     private static int player = 1;
     private static int levens = 2;
     private boolean alive = true;
+    private static boolean inUitleg = false;
     StartButton strtBtn = new StartButton();
     QuitButton qtBtn = new QuitButton();
     LevelSelectorButton lvlSelectBtn = new LevelSelectorButton();
@@ -34,8 +35,12 @@ public class MyWorld extends World {
     @Override
     public void act() {
         buttons();
-        backToMenu();
+        isDead();
+        hudUpdate();
         debug();
+        newLife();
+        buttons();
+        backToMenu();
     }
 
     public void debug(){
@@ -138,17 +143,23 @@ public class MyWorld extends World {
         if(Greenfoot.mouseClicked(h1)){
             clearScreen();
             hr.player = 1;
-            levelGenerator();
+            uitleg();
         }
         if(Greenfoot.mouseClicked(h2)){
             clearScreen();
             hr.player = 2;
-            levelGenerator();
+            uitleg();
         }
         if(Greenfoot.mouseClicked(h3)){
             clearScreen();
             hr.player = 3;
-            levelGenerator();
+            uitleg();
+        }
+        if(inUitleg == true){
+            if(Greenfoot.isKeyDown("space")){
+                inUitleg = false;
+                levelGenerator();
+            }
         }
     }
 
@@ -320,7 +331,13 @@ public class MyWorld extends World {
             break;
         }
     }
-
+    
+    public void uitleg(){
+        inUitleg = true;
+        clearScreen();
+        setBackground("uitleg.png");
+    }
+    
     public void levelGenerator(){
         switch(level){
             case 0: Greenfoot.setWorld(new Debug());
@@ -331,7 +348,7 @@ public class MyWorld extends World {
             break;
             case 3: Greenfoot.setWorld(new Level3());
             break;
-            case 4: Level4 lvl4 = new Level4();
+            case 4: Greenfoot.setWorld(new Level4());
             break;
 
         }

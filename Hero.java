@@ -141,14 +141,14 @@ public class Hero extends Mover {
             }
         }
 
-        /*if(inLevel == true){
+        if(inLevel == true){
             if(isTouching(Tile.class) == false){
                 onGround = false;
             }
             else{
                 onGround = true;
             }
-        }*/
+        }
 
         if (Greenfoot.isKeyDown("left")) {
             velocityX = -6;

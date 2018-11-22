@@ -7,16 +7,11 @@ public class Level1 extends MyWorld
     Hero hr = new Hero();
 
     public void act(){
-        endOfLevel();
-        if(hr.inLevel == true){
+        super.act();
+        try{
             ce.update();
         }
-        isDead();
-        hudUpdate();
-        debug();
-        newLife();
-        buttons();
-        backToMenu();
+        catch(Exception e){}
     }
 
     public Level1()
