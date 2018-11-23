@@ -71,15 +71,13 @@ public class Hero extends Mover {
     }
     
     public void touchingDoor(){
-        for (Actor door : getIntersectingObjects(DoorTile.class)) {
-            if (door != null) {
+            if (isTouching(DoorTile.class)) {
                 isTouchingDoor = true;
                 heroX = getX();
                 velocityX = 0;
                 setLocation((heroX - 50), getY());
                 return;
             }
-        }
     }
 
     public void touching(){
@@ -137,7 +135,7 @@ public class Hero extends Mover {
     public void handleInput() {
         if (Greenfoot.isKeyDown("space")) {
             if(onGround == true){
-                velocityY = -13;
+                velocityY = -14;
             }
         }
 

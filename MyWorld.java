@@ -41,6 +41,7 @@ public class MyWorld extends World {
         newLife();
         buttons();
         backToMenu();
+        endOfLevel();
     }
 
     public void debug(){
@@ -167,7 +168,7 @@ public class MyWorld extends World {
         if(hr.inLevel == true){
             if(hr.alive == false){
                 hr.inLevel = false;
-                if(levens == 0){
+                if(levens == 1){
                     gameOver();
                     level = 1;
                     maxLevel = 1;
@@ -258,7 +259,7 @@ public class MyWorld extends World {
 
     public void gameOver(){
         clearScreen();
-        setBackground("gameOverScreen.png");
+        setBackground("gameOverScreen.jpg");
         addObject(qtBtn, 100, 700);
         addObject(strtBtn, 100, 600);
         player = 1;
