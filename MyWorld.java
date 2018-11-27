@@ -3,9 +3,7 @@ import javax.swing.JOptionPane;
 import greenfoot.*;
 
 public class MyWorld extends World {
-
     private final boolean debug = true;
-    private CollisionEngine ce;
     private static int level = 1;
     private static int maxLevel = 4;
     private static int player = 1;
@@ -27,7 +25,7 @@ public class MyWorld extends World {
 
     public MyWorld() {
         super(1000, 800, 1, false);
-        Greenfoot.start();
+        //Greenfoot.start();
         startScreen();
         hr.inLevel = false;
     }
@@ -42,6 +40,8 @@ public class MyWorld extends World {
         buttons();
         backToMenu();
         endOfLevel();
+        Music.bgMusic();
+        Music.menuMusic();
     }
 
     public void debug(){
@@ -168,13 +168,14 @@ public class MyWorld extends World {
         if(hr.inLevel == true){
             if(hr.alive == false){
                 hr.inLevel = false;
-                if(levens == 1){
+                if(levens == 0){
                     gameOver();
                     level = 1;
                     maxLevel = 1;
                     alive = true;
                 }
                 else{
+                    Music.die();
                     levens --;
                     clearScreen();
                     levelGenerator();
@@ -196,7 +197,7 @@ public class MyWorld extends World {
                 if(maxLevel <= 3){
                     maxLevel ++;
                 }
-                levelSelector();
+                levelCleared();
             }
             else{
                 JOptionPane.showMessageDialog(null, "De deur is nog op slot je moet een sleutel vinden",
@@ -204,6 +205,14 @@ public class MyWorld extends World {
                 hr.isTouchingDoor = false;    
             }
         }
+    }
+
+    public void levelCleared(){
+        Music.lvlClr();
+        clearScreen();
+        setBackground("lvlClr.png");
+        addObject(qtBtn, 100, 700);
+        addObject(lvlSelectBtn, 100, 600);
     }
 
     public void hud(){
@@ -258,6 +267,7 @@ public class MyWorld extends World {
     }
 
     public void gameOver(){
+        Music.gameOver();
         clearScreen();
         setBackground("gameOverScreen.jpg");
         addObject(qtBtn, 100, 700);
@@ -285,7 +295,6 @@ public class MyWorld extends World {
         addObject(lvlSelectBtn, 150, 600);
     }
 
-    //if it looks stupid but it works it aint stupid
     public void clearScreen(){
         hr.inLevel = false;
         removeObjects(getObjects(HUDLives.class));
@@ -332,13 +341,13 @@ public class MyWorld extends World {
             break;
         }
     }
-    
+
     public void uitleg(){
         inUitleg = true;
         clearScreen();
         setBackground("uitleg.png");
     }
-    
+
     public void levelGenerator(){
         switch(level){
             case 0: Greenfoot.setWorld(new Debug());

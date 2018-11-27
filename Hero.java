@@ -1,7 +1,5 @@
 
-
 import greenfoot.*;
-
 /**
  *
  * @author R. Springer
@@ -21,7 +19,7 @@ public class Hero extends Mover {
     public static boolean isTouchingDoor = false;
     public static int diamonds = 0;
     public static int coins = 0;
-
+    
     public Hero(int player) {
         super();
         cntr = 0;
@@ -49,7 +47,7 @@ public class Hero extends Mover {
         acc = 0.6;
         drag = 0.9;
     }
-
+    
     @Override
     public void act() {
         if(Greenfoot.isKeyDown("l")){
@@ -69,36 +67,40 @@ public class Hero extends Mover {
         applyVelocity();
         removeOrNotRemove();
     }
-    
+
     public void touchingDoor(){
-            if (isTouching(DoorTile.class)) {
-                isTouchingDoor = true;
-                heroX = getX();
-                velocityX = 0;
-                setLocation((heroX - 50), getY());
-                return;
-            }
+        if (isTouching(DoorTile.class)) {
+            isTouchingDoor = true;
+            heroX = getX();
+            velocityX = 0;
+            setLocation((heroX - 50), getY());
+            return;
+        }
     }
 
     public void touching(){
         if(isTouching(Key.class)){
             removeTouching(Key.class);
             hasKey = true;
+            Music.key();
         }
         if(isTouching(GoldCoin.class)){
             removeTouching(GoldCoin.class);
             coins += 2;
+            Music.coin();
         }
         if(isTouching(SilverCoin.class)){
             removeTouching(SilverCoin.class);
             coins ++;
+            Music.coin();
         }
         if(isTouching(Diamond.class)){
             removeTouching(Diamond.class);
             diamonds ++;
+            Music.diamond();
         }
     }
-    
+
     public void removeOrNotRemove(){
         for (Actor enemy : getIntersectingObjects(WaterTile.class)) {
             if(inLevel == true){
@@ -124,18 +126,19 @@ public class Hero extends Mover {
             }
         }
     }
-    
+
     public void platformCollision(){
         if(isTouching(Platform.class)){
             setLocation(getX(), getY() - 11);
             onGround = true;
         }
     }
-    
+
     public void handleInput() {
         if (Greenfoot.isKeyDown("space")) {
             if(onGround == true){
-                velocityY = -14;
+                Music.jump();
+                velocityY = -15;
             }
         }
 
