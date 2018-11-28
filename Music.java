@@ -18,38 +18,15 @@ public class Music
         if(hr.inLevel == true && bgMusic.isPlaying() == false){
             titleMusic.stop();
             bgMusic.playLoop();
+            bgMusic.setVolume(60);
         }
         if(hr.alive == false || hr.inLevel == false){
             bgMusic.stop();
         }
     }
     public static void menuMusic(){
-        if(hr.inLevel == false){
+        if(hr.inLevel == false && lvlClr.isPlaying() == false){
             titleMusic.playLoop();
         }
-    }
-    public static void jump(){
-        jump.play();
-    }
-    public static void coin(){
-        coin.play();
-    }
-    public static void newLife(){
-        newLife.play();
-    }
-    public static void gameOver(){
-        gameOver.play();
-    }
-    public static void diamond(){
-        diamond.play();
-    }
-    public static void key(){
-        key.play();
-    }
-    public static void die(){
-        die.play();
-    }
-    public static void lvlClr(){
-        lvlClr.play();
     }
 }

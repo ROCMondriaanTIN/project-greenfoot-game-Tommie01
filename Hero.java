@@ -12,14 +12,15 @@ public class Hero extends Mover {
     private static int cntr = 0;
     private static int heroX;
     public static int player;
-    private boolean onGround = true;
     public static boolean alive = true;
     public static boolean hasKey = false;
     public static boolean hasDiamond = false;
     public static boolean isTouchingDoor = false;
+    private static boolean onGround = false;
     public static int diamonds = 0;
     public static int coins = 0;
-    
+    private static int scaleDecrease = 1;
+
     public Hero(int player) {
         super();
         cntr = 0;
@@ -27,13 +28,12 @@ public class Hero extends Mover {
         gravity = 9.8;
         acc = 0.6;
         drag = 0.8;
-        onGround = false;
-        onGround = true;
         switch(player){
 
             case 1: setImage("p1_front.png");
             break;
             case 2: setImage("p2_front.png");
+            getImage().scale(getWidth() - scaleDecrease, getHeight() - scaleDecrease);
             break;
             case 3: setImage("p3_front.png");
             break;
@@ -47,7 +47,7 @@ public class Hero extends Mover {
         acc = 0.6;
         drag = 0.9;
     }
-    
+
     @Override
     public void act() {
         if(Greenfoot.isKeyDown("l")){
@@ -82,22 +82,22 @@ public class Hero extends Mover {
         if(isTouching(Key.class)){
             removeTouching(Key.class);
             hasKey = true;
-            Music.key();
+            Music.key.play();
         }
         if(isTouching(GoldCoin.class)){
             removeTouching(GoldCoin.class);
             coins += 2;
-            Music.coin();
+            Music.coin.play();
         }
         if(isTouching(SilverCoin.class)){
             removeTouching(SilverCoin.class);
             coins ++;
-            Music.coin();
+            Music.coin.play();
         }
         if(isTouching(Diamond.class)){
             removeTouching(Diamond.class);
             diamonds ++;
-            Music.diamond();
+            Music.diamond.play();
         }
     }
 
@@ -134,29 +134,31 @@ public class Hero extends Mover {
         }
     }
 
+    public boolean onGround(){
+        if(isTouching(Tile.class) == false ){
+            return false;
+        }
+        else if(onGround = true){
+            onGround = false;
+            return true;
+        }
+        return true;
+    }
+
     public void handleInput() {
         if (Greenfoot.isKeyDown("space")) {
-            if(onGround == true){
-                Music.jump();
+            if(onGround() == true){
+                Music.jump.play();
                 velocityY = -15;
             }
         }
-
-        if(inLevel == true){
-            if(isTouching(Tile.class) == false){
-                onGround = false;
-            }
-            else{
-                onGround = true;
-            }
-        }
-
         if (Greenfoot.isKeyDown("left")) {
             velocityX = -6;
             switch(player){
                 case 1: setImage("p1_walk_left.png");
                 break;
                 case 2: setImage("p2_walk_left.png");
+                getImage().scale(getWidth() - scaleDecrease, getHeight() - scaleDecrease);
                 break;
                 case 3: setImage("p3_walk_left.png");
                 break;
@@ -167,6 +169,7 @@ public class Hero extends Mover {
                 case 1: setImage("p1_walk_right.png");
                 break;
                 case 2: setImage("p2_walk_right.png");
+                getImage().scale(getWidth() - scaleDecrease, getHeight() - scaleDecrease);
                 break;
                 case 3: setImage("p3_walk_right.png");
                 break;

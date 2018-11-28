@@ -3,9 +3,9 @@ import javax.swing.JOptionPane;
 import greenfoot.*;
 
 public class MyWorld extends World {
-    private final boolean debug = true;
+    private final boolean debug = false;
     private static int level = 1;
-    private static int maxLevel = 4;
+    private static int maxLevel = 1;
     private static int player = 1;
     private static int levens = 2;
     private boolean alive = true;
@@ -25,7 +25,7 @@ public class MyWorld extends World {
 
     public MyWorld() {
         super(1000, 800, 1, false);
-        //Greenfoot.start();
+        Greenfoot.start();
         startScreen();
         hr.inLevel = false;
     }
@@ -88,6 +88,8 @@ public class MyWorld extends World {
             startScreen();
         }
         if(Greenfoot.mouseClicked(lvlSelectBtn)){
+            Music.lvlClr.stop();
+            Music.menuMusic();
             clearScreen();
             levelSelector();
         }
@@ -175,7 +177,7 @@ public class MyWorld extends World {
                     alive = true;
                 }
                 else{
-                    Music.die();
+                    Music.die.play();
                     levens --;
                     clearScreen();
                     levelGenerator();
@@ -208,7 +210,7 @@ public class MyWorld extends World {
     }
 
     public void levelCleared(){
-        Music.lvlClr();
+        Music.lvlClr.play();
         clearScreen();
         setBackground("lvlClr.png");
         addObject(qtBtn, 100, 700);
@@ -267,7 +269,7 @@ public class MyWorld extends World {
     }
 
     public void gameOver(){
-        Music.gameOver();
+        Music.gameOver.play();
         clearScreen();
         setBackground("gameOverScreen.jpg");
         addObject(qtBtn, 100, 700);
