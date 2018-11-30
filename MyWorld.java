@@ -1,4 +1,3 @@
-
 import javax.swing.JOptionPane;
 import greenfoot.*;
 
@@ -22,6 +21,7 @@ public class MyWorld extends World {
     HeroPicker h1 = new HeroPicker(1);
     HeroPicker h2 = new HeroPicker(2);
     HeroPicker h3 = new HeroPicker(3);
+
 
     public MyWorld() {
         super(1000, 800, 1, false);
@@ -358,6 +358,9 @@ public class MyWorld extends World {
     }
 
     public void levelGenerator(){
+            // Force act zodat de camera op de juist plek staat.
+        camera.act();
+        hero.act();
         switch(level){
             case 0: Greenfoot.setWorld(new Debug());
             break;
