@@ -9,11 +9,11 @@ import java.util.List;
  */
 public class CollisionEngine {
 
+    
     public static final boolean DEBUG = false;
     private final Camera camera;
     private final TileEngine tileEngine;
     private final List<Mover> collidingActors;
-    private final List<Tile> collidingTiles;
 
     /**
      * The constructor of the CollisionEngine.
@@ -24,7 +24,6 @@ public class CollisionEngine {
     public CollisionEngine(TileEngine tileEngine, Camera camera) {
         this.tileEngine = tileEngine;
         collidingActors = new ArrayList<>();
-        collidingTiles = new ArrayList<>(6);
         this.camera = camera;
     }
 
@@ -55,7 +54,11 @@ public class CollisionEngine {
      */
     public void update() {
         for (Mover mover : this.collidingActors) {
-            List<Tile> tiles = getCollidingTiles(mover, false);
+            int actorLeft = getActorLeft(mover);
+            int actorRight = getActorRight(mover);
+            int actorTop = getActorTop(mover);
+            int actorBottom = getActorBottom(mover);
+            List<Tile> tiles = getCollidingTiles(actorTop, actorLeft, actorRight, actorBottom, mover.getX(), mover.getY());
             if (!tiles.isEmpty()) {
                 for (Tile tile : tiles) {
                     boolean resolved = resolve(mover, tile);
@@ -90,7 +93,7 @@ public class CollisionEngine {
      * @return
      */
     public boolean detect(Mover mover, int actorLeft, int actorRight, int actorTop, int actorBottom) {
-        return !getCollidingTiles(actorTop, actorLeft, actorRight, actorBottom, mover.getX(), mover.getY(), false).isEmpty();
+        return !getCollidingTiles(actorTop, actorLeft, actorRight, actorBottom, mover.getX(), mover.getY()).isEmpty();
     }
     
     /**
@@ -104,54 +107,47 @@ public class CollisionEngine {
      * @param midY The middle y position
      * @return Returns a list of tiles that are located on those positions.
      */
-    public List<Tile> getCollidingTiles(int top, int left, int right, int bottom, int midX, int midY, boolean addNoneSolid) {
-        collidingTiles.clear();
+    private List<Tile> getCollidingTiles(int top, int left, int right, int bottom, int midX, int midY) {
+        List<Tile> tiles = new ArrayList<>();
         
-        Tile tile = tileEngine.getTileAtXY(left, top);
-        if (tile != null && (addNoneSolid || tile.isSolid)) {
-            collidingTiles.add(tile);
+        if (tileEngine.checkTileSolid(left, top)) {
+            Tile tile = tileEngine.getTileAtXY(left, top);
+            tiles.add(tile);
         }
-        tile = tileEngine.getTileAtXY(left, bottom);
-        if (tile != null && (addNoneSolid || tile.isSolid)) {
-            if (!collidingTiles.contains(tile)) {
-                collidingTiles.add(tile);
+        if (tileEngine.checkTileSolid(left, bottom)) {
+            Tile tile = tileEngine.getTileAtXY(left, bottom);
+            if (!tiles.contains(tile)) {
+                tiles.add(tile);
             }
         }
-        tile = tileEngine.getTileAtXY(right, bottom);
-        if (tile != null && (addNoneSolid || tile.isSolid)) {
-            if (!collidingTiles.contains(tile)) {
-                collidingTiles.add(tile);
+        if (tileEngine.checkTileSolid(right, bottom)) {
+            Tile tile = tileEngine.getTileAtXY(right, bottom);
+            if (!tiles.contains(tile)) {
+                tiles.add(tile);
             }
         }
-        tile = tileEngine.getTileAtXY(right, top);
-        if (tile != null && (addNoneSolid || tile.isSolid)) {
-            if (!collidingTiles.contains(tile)) {
-                collidingTiles.add(tile);
+        if (tileEngine.checkTileSolid(right, top)) {
+            Tile tile = tileEngine.getTileAtXY(right, top);
+            if (!tiles.contains(tile)) {
+                tiles.add(tile);
             }
         }
-
-        tile = tileEngine.getTileAtXY(midX, top);
-        if (tile != null && (addNoneSolid || tile.isSolid)) {
-            if (!collidingTiles.contains(tile)) {
-                collidingTiles.add(tile);
+        if (tileEngine.checkTileSolid(midX, top)) {
+            Tile tile = tileEngine.getTileAtXY(midX, top);
+            if (!tiles.contains(tile)) {
+                tiles.add(tile);
             }
         }
-        tile = tileEngine.getTileAtXY(midX, bottom);
-        if (tile != null && (addNoneSolid || tile.isSolid)) {
-            if (!collidingTiles.contains(tile)) {
-                collidingTiles.add(tile);
+        if (tileEngine.checkTileSolid(midX, bottom)) {
+            Tile tile = tileEngine.getTileAtXY(midX, bottom);
+            if (!tiles.contains(tile)) {
+                tiles.add(tile);
             }
         }
-        tile = tileEngine.getTileAtXY(left, midY);
-        if (tile != null && (addNoneSolid || tile.isSolid)) {
-            if (!collidingTiles.contains(tile)) {
-                collidingTiles.add(tile);
-            }
-        }
-        tile = tileEngine.getTileAtXY(right, midY);
-        if (tile != null && (addNoneSolid || tile.isSolid)) {
-            if (!collidingTiles.contains(tile)) {
-                collidingTiles.add(tile);
+        if (tileEngine.checkTileSolid(left, midY)) {
+            Tile tile = tileEngine.getTileAtXY(left, midY);
+            if (!tiles.contains(tile)) {
+                tiles.add(tile);
             }
         }
         if (tileEngine.checkTileSolid(right, midY)) {
@@ -160,23 +156,13 @@ public class CollisionEngine {
                 tiles.add(tile);
             }
         }
-        return collidingTiles;
-    }
-
-    /**
-     * Getting the colliding Tiles from the collision engine
-     *
-     * @param mover A Mover class or a extend of it.
-     * @param addNoneSolid If true it also add tiles that are not solid to the
-     * list
-     * @return A List of overlapping tiles.
-     */
-    public List<Tile> getCollidingTiles(Mover mover, boolean addNoneSolid) {
-        int actorLeft = getActorLeft(mover);
-        int actorRight = getActorRight(mover);
-        int actorTop = getActorTop(mover);
-        int actorBottom = getActorBottom(mover);
-        return this.getCollidingTiles(actorTop, actorLeft, actorRight, actorBottom, mover.getX(), mover.getY(), addNoneSolid);
+        if (tileEngine.checkTileSolid(right, midY)) {
+            Tile tile = tileEngine.getTileAtXY(right, midY);
+            if (!tiles.contains(tile)) {
+                tiles.add(tile);
+            }
+        }
+        return tiles;
     }
    
     
