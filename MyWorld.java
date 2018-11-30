@@ -25,7 +25,7 @@ public class MyWorld extends World {
 
     public MyWorld() {
         super(1000, 800, 1, false);
-        Greenfoot.start();
+        //Greenfoot.start();
         startScreen();
         hr.inLevel = false;
     }
@@ -190,16 +190,23 @@ public class MyWorld extends World {
     public void endOfLevel(){
         if(hr.isTouchingDoor == true){
             if(hr.hasKey == true){
-                clearScreen();
-                hr.isTouchingDoor = false;
-                levens = 2;
-                if(level <= 3){
-                    level ++;
+                if(level == 4){
+                    clearScreen();
+                    setBackground("gameClear.png");
+                    Music.worldClear.play();
                 }
-                if(maxLevel <= 3){
-                    maxLevel ++;
+                else{
+                    clearScreen();
+                    hr.isTouchingDoor = false;
+                    levens = 2;
+                    if(level <= 3){
+                        level ++;
+                    }
+                    if(maxLevel <= 3){
+                        maxLevel ++;
+                    }
+                    levelCleared();
                 }
-                levelCleared();
             }
             else{
                 JOptionPane.showMessageDialog(null, "De deur is nog op slot je moet een sleutel vinden",

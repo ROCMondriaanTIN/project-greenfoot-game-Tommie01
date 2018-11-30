@@ -61,6 +61,18 @@ public class Level4 extends MyWorld
         addObject(camera, 0, 0);
         ce = new CollisionEngine(te, camera);
         ce.addCollidingMover(hero);
-        addObject(hero, 300, 900); 
+        addObject(hero, 300, 900);
+        addObject(new Key(), 2811, 1332);
+        addObject(new Diamond(), 4388, 1632);
+        addObject(new SilverCoin(), 3276, 1632);
+        addObject(new SilverCoin(), 3074, 852);
+        addObject(new SilverCoin(), 212, 192);
+        addObject(new SilverCoin(), 3591, 252);
+        addObject(new GoldCoin(), 4010, 852);
+        addObject(new GoldCoin(), 492, 1332);
+        addObject(new Enemy(), 4316, 1677);
+        addObject(new Enemy(), 2645, 887);
+        addObject(new Fireball(), 3958, 1632);
+        addObject(new Fireball(), 1327, 512);
     }
 }

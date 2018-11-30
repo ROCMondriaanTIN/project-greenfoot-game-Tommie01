@@ -132,15 +132,17 @@ public class Hero extends Mover {
             setLocation(getX(), getY() - 11);
             onGround = true;
         }
+        else{
+            onGround = false;
+        }
     }
 
     public boolean onGround(){
+        if(onGround == true){
+            return true;
+        }
         if(isTouching(Tile.class) == false ){
             return false;
-        }
-        else if(onGround = true){
-            onGround = false;
-            return true;
         }
         return true;
     }

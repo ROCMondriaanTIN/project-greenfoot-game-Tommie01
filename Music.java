@@ -13,6 +13,7 @@ public class Music
     static GreenfootSound key = new GreenfootSound("key.mp3");
     static GreenfootSound die = new GreenfootSound("die.mp3");
     static GreenfootSound lvlClr = new GreenfootSound("lvlClr.mp3");
+    static GreenfootSound worldClear = new GreenfootSound("worldClear.mp3");
     
     public static void bgMusic(){
         if(hr.inLevel == true && bgMusic.isPlaying() == false){
@@ -25,7 +26,7 @@ public class Music
         }
     }
     public static void menuMusic(){
-        if(hr.inLevel == false && lvlClr.isPlaying() == false){
+        if(lvlClr.isPlaying() == false && gameOver.isPlaying() == false && bgMusic.isPlaying() == false && worldClear.isPlaying() == false){
             titleMusic.playLoop();
         }
     }
