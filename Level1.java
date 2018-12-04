@@ -4,7 +4,6 @@ public class Level1 extends MyWorld
 {
 
     private CollisionEngine ce;
-    Hero hr = new Hero();
 
     public void act(){
         super.act();
@@ -17,9 +16,9 @@ public class Level1 extends MyWorld
     public Level1()
     {   
         clearScreen();
-        hr.inLevel = true;
-        hr.hasKey = false;
-        hr.alive = true;
+        Hero.inLevel = true;
+        Hero.hasKey = false;
+        Hero.alive = true;
         this.setBackground("bg1.png");
         int[][] map = {
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -56,7 +55,7 @@ public class Level1 extends MyWorld
                 {204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204},
 
             };
-        Hero hero = new Hero(hr.player);
+        Hero hero = new Hero(Hero.player);
         TileEngine te = new TileEngine(this, 60, 60, map);
         Camera camera = new Camera(te);
         camera.follow(hero);
@@ -64,7 +63,7 @@ public class Level1 extends MyWorld
         ce = new CollisionEngine(te, camera);
         ce.addCollidingMover(hero);
         addObject(hero, 300, 900);
-        if(hr.diamonds >= 0 ){
+        if(Hero.diamonds >= 0 ){
             addObject(new Diamond(), 543,1332);
         }
         addObject(new Key(), 180, 550);

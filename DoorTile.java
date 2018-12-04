@@ -11,8 +11,4 @@ public class DoorTile extends Tile
     public DoorTile(String image, int width, int heigth){
         super(image, width, heigth);
     }
-    public void act() 
-    {
-        
-    }    
 }

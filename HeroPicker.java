@@ -1,17 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class HeroPicker here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class HeroPicker extends Actor
 {
-    /**
-     * Act - do whatever the HeroPicker wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
     private static int player;
     
     public HeroPicker(int player){
@@ -26,9 +16,5 @@ public class HeroPicker extends Actor
             break;
 
         }
-    }
-    
-    public void act() 
-    {
-    }    
+    }  
 }

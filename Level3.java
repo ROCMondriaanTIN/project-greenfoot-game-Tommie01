@@ -3,7 +3,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Level3 extends MyWorld
 {
     private CollisionEngine ce;
-    Hero hr = new Hero();
+
 
     public void act(){
         super.act();
@@ -15,10 +15,10 @@ public class Level3 extends MyWorld
 
     public Level3()
     {    
-        hr.alive = true;
+        Hero.alive = true;
         clearScreen();
-        hr.inLevel = true;
-        hr.hasKey = false;
+        Hero.inLevel = true;
+        Hero.hasKey = false;
         this.setBackground("bg1.png");
         int[][] map = {
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -56,7 +56,7 @@ public class Level3 extends MyWorld
 
             };
         addObject(new waitSign(), 510, 1530);
-        Hero hero = new Hero(hr.player);
+        Hero hero = new Hero(Hero.player);
         TileEngine te = new TileEngine(this, 60, 60, map);
         Camera camera = new Camera(te);
         camera.follow(hero);
@@ -67,7 +67,7 @@ public class Level3 extends MyWorld
         addObject(new Platform(1700, 0), 1487, 1690);
         addObject(new Platform(700, 1), 2292, 1233);
         addObject(new Key(), 1191, 1452);
-        if(hr.diamonds != 3){
+        if(Hero.diamonds != 3){
             addObject(new Diamond(), 3512, 312);
         }
         addObject(new GoldCoin(), 2504, 552);

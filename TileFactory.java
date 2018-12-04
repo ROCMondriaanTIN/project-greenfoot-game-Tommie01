@@ -18,6 +18,10 @@ public class TileFactory {
             tile = new Tile("box.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             tile.isSolid = true;
             break;
+            case 185:
+            tile = new Tile("box.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = true;
+            break;
             case 1:
             tile = new Tile("boxAlt.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             tile.isSolid = true;
@@ -72,6 +76,9 @@ public class TileFactory {
             tile = new Tile("liquidWaterTop_mid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 12:
+            tile = new Tile("signExit.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            break;
+            case 311:
             tile = new Tile("signExit.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
             break;
             case 518:

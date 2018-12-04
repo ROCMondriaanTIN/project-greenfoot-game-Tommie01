@@ -2,7 +2,6 @@ import greenfoot.*;
 
 public class Music
 {
-    static Hero hr = new Hero();
     static GreenfootSound bgMusic = new GreenfootSound("backgroundMusic1.mp3");
     static GreenfootSound titleMusic = new GreenfootSound("titleScreen.mp3");  
     static GreenfootSound jump = new GreenfootSound("jump.mp3");
@@ -16,12 +15,12 @@ public class Music
     static GreenfootSound worldClear = new GreenfootSound("worldClear.mp3");
     
     public static void bgMusic(){
-        if(hr.inLevel == true && bgMusic.isPlaying() == false){
+        if(Hero.inLevel == true && bgMusic.isPlaying() == false){
             titleMusic.stop();
             bgMusic.playLoop();
             bgMusic.setVolume(60);
         }
-        if(hr.alive == false || hr.inLevel == false){
+        if(Hero.alive == false || Hero.inLevel == false){
             bgMusic.stop();
         }
     }

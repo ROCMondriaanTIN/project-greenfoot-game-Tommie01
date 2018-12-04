@@ -3,7 +3,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Level2 extends MyWorld
 {
     private CollisionEngine ce;
-    Hero hr = new Hero();
 
     public void act(){
         super.act();
@@ -15,10 +14,10 @@ public class Level2 extends MyWorld
 
     public Level2()
     {    
-        hr.alive = true;
+        Hero.alive = true;
         clearScreen();
-        hr.inLevel = true;
-        hr.hasKey = false;
+        Hero.inLevel = true;
+        Hero.hasKey = false;
         this.setBackground("bg1.png");
         int[][] map = {
                 {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -55,7 +54,7 @@ public class Level2 extends MyWorld
                 {10,10,6,6,6,6,10,10,10,10,10,6,6,6,6,10,10,10,10,10,10,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,6,6,6,6,6,6,10,10,10,10,10,10,10,10,10,10},
 
             };
-        Hero hero = new Hero(hr.player);
+        Hero hero = new Hero(Hero.player);
         TileEngine te = new TileEngine(this, 60, 60, map);
         Camera camera = new Camera(te);
         camera.follow(hero);
@@ -75,7 +74,7 @@ public class Level2 extends MyWorld
         addObject(new Enemy(), 1836,645);
         addObject(new Enemy(), 2141, 1245);
         addObject(new Fireball(), 1893, 270);
-        if(hr.diamonds != 2){
+        if(Hero.diamonds != 2){
             addObject(new Diamond(), 329,192);
         }
         hud();

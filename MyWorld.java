@@ -3,7 +3,7 @@ import javax.swing.JOptionPane;
 import greenfoot.*;
 
 public class MyWorld extends World {
-    private final boolean debug = false;
+    private static final boolean debug = false;
     private static int level = 1;
     private static int maxLevel = 1;
     private static int player = 1;
@@ -18,7 +18,6 @@ public class MyWorld extends World {
     LevelButton lvl3Btn = new LevelButton("button_level3_lck.png");
     LevelButton lvl4Btn = new LevelButton("button_level4_lck.png");
     LevelButton debugLvlBtn = new LevelButton("button_debug.png");
-    Hero hr = new Hero();
     HeroPicker h1 = new HeroPicker(1);
     HeroPicker h2 = new HeroPicker(2);
     HeroPicker h3 = new HeroPicker(3);
@@ -27,7 +26,7 @@ public class MyWorld extends World {
         super(1000, 800, 1, false);
         //Greenfoot.start();
         startScreen();
-        hr.inLevel = false;
+        Hero.inLevel = false;
     }
 
     @Override
@@ -47,21 +46,21 @@ public class MyWorld extends World {
     public void debug(){
         if(debug == true){
             if(Greenfoot.isKeyDown("k")){
-                hr.alive = false;
+                Hero.alive = false;
                 Greenfoot.delay(10);
             }
             if(Greenfoot.isKeyDown("m")){
                 String debugCoins = JOptionPane.showInputDialog(null, "Debug coins");
-                hr.coins = Integer.parseInt(debugCoins);
+                Hero.coins = Integer.parseInt(debugCoins);
                 Greenfoot.delay(10);
             }
             if(Greenfoot.isKeyDown("n")){
                 String debugDiamonds = JOptionPane.showInputDialog(null, "Debug diamonds");
-                hr.diamonds = Integer.parseInt(debugDiamonds);
+                Hero.diamonds = Integer.parseInt(debugDiamonds);
                 Greenfoot.delay(10);
             }
             if(Greenfoot.isKeyDown("b")){
-                hr.hasKey = true;
+                Hero.hasKey = true;
                 Greenfoot.delay(10);
             }
             maxLevel = 4;
@@ -75,10 +74,11 @@ public class MyWorld extends World {
         }
     }
 
-    public void newLife(){
-        if(hr.coins >= 40){
-            hr.coins = 0;
+    public static void newLife(){
+        if(Hero.coins >= 40){
+            Hero.coins = 0;
             levens ++;
+            Music.newLife.play();
         }
     }
 
@@ -145,17 +145,17 @@ public class MyWorld extends World {
         }
         if(Greenfoot.mouseClicked(h1)){
             clearScreen();
-            hr.player = 1;
+            Hero.player = 1;
             uitleg();
         }
         if(Greenfoot.mouseClicked(h2)){
             clearScreen();
-            hr.player = 2;
+            Hero.player = 2;
             uitleg();
         }
         if(Greenfoot.mouseClicked(h3)){
             clearScreen();
-            hr.player = 3;
+            Hero.player = 3;
             uitleg();
         }
         if(inUitleg == true){
@@ -167,9 +167,9 @@ public class MyWorld extends World {
     }
 
     public void isDead(){
-        if(hr.inLevel == true){
-            if(hr.alive == false){
-                hr.inLevel = false;
+        if(Hero.inLevel == true){
+            if(Hero.alive == false){
+                Hero.inLevel = false;
                 if(levens == 0){
                     gameOver();
                     level = 1;
@@ -188,8 +188,8 @@ public class MyWorld extends World {
     }
 
     public void endOfLevel(){
-        if(hr.isTouchingDoor == true){
-            if(hr.hasKey == true){
+        if(Hero.isTouchingDoor == true){
+            if(Hero.hasKey == true){
                 if(level == 4){
                     clearScreen();
                     setBackground("gameClear.png");
@@ -197,7 +197,7 @@ public class MyWorld extends World {
                 }
                 else{
                     clearScreen();
-                    hr.isTouchingDoor = false;
+                    Hero.isTouchingDoor = false;
                     levens = 2;
                     if(level <= 3){
                         level ++;
@@ -211,7 +211,7 @@ public class MyWorld extends World {
             else{
                 JOptionPane.showMessageDialog(null, "De deur is nog op slot je moet een sleutel vinden",
                     "", JOptionPane.WARNING_MESSAGE);
-                hr.isTouchingDoor = false;    
+                Hero.isTouchingDoor = false;    
             }
         }
     }
@@ -225,11 +225,11 @@ public class MyWorld extends World {
     }
 
     public void hud(){
-        if(hr.inLevel == true){
+        if(Hero.inLevel == true){
             for (int i = 0; i < levens; i ++){
                 addObject(new HUDLives(), (50 + (i * 15)), 40);
             }
-            for (int i = 0; i < hr.coins; i ++){
+            for (int i = 0; i < Hero.coins; i ++){
                 if(i <= 9){
                     addObject(new HUDCoins(), (50 + (i * 15)), 100);
                 }
@@ -243,10 +243,10 @@ public class MyWorld extends World {
                     addObject(new HUDCoins(), (50 + ((i * 15) - 450)), 280);
                 }
             }
-            for (int i = 0; i < hr.diamonds; i ++){
+            for (int i = 0; i < Hero.diamonds; i ++){
                 addObject(new HUDDiamond(), (50 + (i * 15)), 340);
             }
-            if(hr.hasKey == true){
+            if(Hero.hasKey == true){
                 addObject(new HUDKey("hud_keyYellow.png"), 50, 400);
                 removeObjects(getObjects(Key.class));
             }
@@ -261,15 +261,15 @@ public class MyWorld extends World {
             removeObjects(getObjects(HUDLives.class));
             hud();
         }
-        if(getObjects(HUDCoins.class).size() != hr.coins){
+        if(getObjects(HUDCoins.class).size() != Hero.coins){
             removeObjects(getObjects(HUDCoins.class));
             hud();
         }
-        if(getObjects(HUDDiamond.class).size() != hr.diamonds){
+        if(getObjects(HUDDiamond.class).size() != Hero.diamonds){
             removeObjects(getObjects(HUDDiamond.class));
             hud();
         }
-        if(getObjects(HUDKey.class).size() == 0 || hr.hasKey == true){
+        if(getObjects(HUDKey.class).size() == 0 || Hero.hasKey == true){
             removeObjects(getObjects(HUDKey.class));
             hud();
         }
@@ -283,8 +283,8 @@ public class MyWorld extends World {
         addObject(strtBtn, 100, 600);
         player = 1;
         levens = 2;
-        hr.coins = 0;
-        hr.diamonds = 0;
+        Hero.coins = 0;
+        Hero.diamonds = 0;
         maxLevel = 1;
         level = 0;
     }
@@ -305,7 +305,7 @@ public class MyWorld extends World {
     }
 
     public void clearScreen(){
-        hr.inLevel = false;
+        Hero.inLevel = false;
         removeObjects(getObjects(HUDLives.class));
         removeObjects(getObjects(HUDKey.class));
         removeObjects(getObjects(HUDCoins.class));

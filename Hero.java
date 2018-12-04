@@ -86,13 +86,23 @@ public class Hero extends Mover {
         }
         if(isTouching(GoldCoin.class)){
             removeTouching(GoldCoin.class);
-            coins += 2;
-            Music.coin.play();
+            if(coins != 39){
+                Music.coin.play();
+            }
+            if(coins == 39){
+                Music.newLife.play();
+                coins = 1;
+            }
+            else{
+                coins += 2;
+            }
         }
         if(isTouching(SilverCoin.class)){
             removeTouching(SilverCoin.class);
+            if(coins != 39){
+                Music.coin.play();
+            }
             coins ++;
-            Music.coin.play();
         }
         if(isTouching(Diamond.class)){
             removeTouching(Diamond.class);
@@ -117,8 +127,6 @@ public class Hero extends Mover {
                 alive = false;
                 return;
             }
-        }
-        if(inLevel == true){
             if(isTouching(Enemy.class)){
                 getWorld().removeObject(this);
                 alive = false;
