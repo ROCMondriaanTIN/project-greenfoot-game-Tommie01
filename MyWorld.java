@@ -290,7 +290,7 @@ public class MyWorld extends World {
     }
 
     public void characterMenu(){
-        this.setBackground("bg2.png");
+        this.setBackground("bg.png");
         showText("Kies een speler", 100, 400);
         addObject(h1, 100, 500);
         addObject(h2, 100, 700);
@@ -299,7 +299,7 @@ public class MyWorld extends World {
 
     public void startScreen(){
         clearScreen();
-        this.setBackground("bg2.png");
+        this.setBackground("bg.png");
         addObject(qtBtn, 150, 700);
         addObject(lvlSelectBtn, 150, 600);
     }
@@ -329,7 +329,7 @@ public class MyWorld extends World {
     }
 
     public void levelSelector(){
-        this.setBackground("bg2.png");
+        this.setBackground("bg.png");
         if(debug == true){
             addObject(debugLvlBtn, 100, 300);
         }
