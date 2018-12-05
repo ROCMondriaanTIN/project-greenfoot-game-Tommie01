@@ -63,7 +63,7 @@ public class Level1 extends MyWorld
         ce = new CollisionEngine(te, camera);
         ce.addCollidingMover(hero);
         addObject(hero, 300, 900);
-        if(Hero.diamonds >= 0 ){
+        if(Hero.diamonds == 0 ){
             addObject(new Diamond(), 543,1332);
         }
         addObject(new Key(), 180, 550);
