@@ -87,8 +87,8 @@ public class Hero extends Mover {
     private GreenfootImage p3Run21 = new GreenfootImage("p3_walk10.png");
     private GreenfootImage p3Run22 = new GreenfootImage("p3_walk11.png");
     private static int frame = 0;
-    private static int width = 65;
-    private static int height = 90;
+    private static int width = 70;
+    private static int height = 95;
 
     public Hero(int player) {
         super();
@@ -284,7 +284,7 @@ public class Hero extends Mover {
             if(frame == 1)
             {
                 setImage(p2Run12);
-                // getImage().scale(width, height);
+                
             }
             else if (frame == 2)
             {
@@ -333,6 +333,7 @@ public class Hero extends Mover {
                 frame = 0;
                 return;
             }
+            getImage().scale(width, height);
             frame ++;
             break;
             case 3:
@@ -488,6 +489,7 @@ public class Hero extends Mover {
             frame = 0;
             return;
         }
+        getImage().scale(width, height);
         frame ++;
         break;
         case 3:    
@@ -549,10 +551,15 @@ public class Hero extends Mover {
 }
     public void handleInput() {
         if (Greenfoot.isKeyDown("space")) {
-            if(onGround() == true){
-                Music.jump.play();
-                velocityY = -15;
+            for (Actor enemy : getIntersectingObjects(Tile.class)) {
+            if(inLevel == true){
+                if (enemy != null) {
+                    Music.jump.play();
+                    velocityY = -15;
+                    return;
+                }
             }
+        }
         }
         if (Greenfoot.isKeyDown("left")) {
             velocityX = -6;
