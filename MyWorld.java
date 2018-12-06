@@ -3,7 +3,7 @@ import javax.swing.JOptionPane;
 import greenfoot.*;
 
 public class MyWorld extends World {
-    private static final boolean debug = false;
+    private static final boolean debug = true;
     private static int level = 1;
     private static int maxLevel = 1;
     private static int player = 1;
@@ -133,6 +133,7 @@ public class MyWorld extends World {
             }
         }
         if(Greenfoot.mouseClicked(lvl4Btn)){
+            
             if(maxLevel >= 4){
                 level = 4;
                 clearScreen();

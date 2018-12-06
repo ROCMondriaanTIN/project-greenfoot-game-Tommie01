@@ -56,6 +56,7 @@ public class Level3 extends MyWorld
 
             };
         addObject(new waitSign(), 510, 1530);
+        addObject(new waitSign(), 2231, 1530);
         Hero hero = new Hero(Hero.player);
         TileEngine te = new TileEngine(this, 60, 60, map);
         Camera camera = new Camera(te);

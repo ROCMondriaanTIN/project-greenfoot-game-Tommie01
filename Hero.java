@@ -102,7 +102,7 @@ public class Hero extends Mover {
             case 1: setImage("p1_front.png");
             break;
             case 2: setImage("p2_front.png");
-            
+
             break;
             case 3: setImage("p3_front.png");
             break;
@@ -284,52 +284,52 @@ public class Hero extends Mover {
             if(frame == 1)
             {
                 setImage(p2Run12);
-                
+
             }
             else if (frame == 2)
             {
                 setImage(p2Run13);
-                
+
             }
             else if (frame == 3)
             {
                 setImage(p2Run14);
-                
+
             }
             else if (frame == 4)
             {
                 setImage(p2Run15);
-                
+
             }
             else if (frame == 5)
             {
                 setImage(p2Run16);
-                
+
             }
             else if (frame == 6)
             {
                 setImage(p2Run17);
-                
+
             }
             else if (frame == 7)
             {
                 setImage(p2Run18);
-                
+
             }
             else if (frame == 8)
             {
                 setImage(p2Run19);
-                
+
             }
             else if (frame == 9)
             {
                 setImage(p2Run20);
-                
+
             }
             else if (frame == 10)
             {
                 setImage (p2Run21);
-                
+
                 frame = 0;
                 return;
             }
@@ -395,171 +395,169 @@ public class Hero extends Mover {
 
     public void animatieLeft() {
         switch(player){
-        case 1:    
-        if(frame == 1)
-        {
-            setImage(run1);
+            case 1:    
+            if(frame == 1)
+            {
+                setImage(run1);
 
-        }
-        else if (frame == 2)
-        {
-            setImage(run2);
-
-        }
-        else if (frame == 3)
-        {
-            setImage(run3);
-        }
-        else if (frame == 4)
-        {
-            setImage(run4);
-        }
-        else if (frame == 5)
-        {
-            setImage(run5);
-        }
-        else if (frame == 6)
-        {
-            setImage(run6);
-        }
-        else if (frame == 7)
-        {
-            setImage(run7);
-        }
-        else if (frame == 8)
-        {
-            setImage(run8);
-        }
-        else if (frame == 9)
-        {
-            setImage(run9);
-        }
-        else if (frame == 10)
-        {
-            setImage (run10);
-
-            frame = 0;
-            return;
-        }
-        frame ++;
-        break;
-        case 2:    
-        if(frame == 1)
-        {
-            setImage(p2Run1);
-
-        }
-        else if (frame == 2)
-        {
-            setImage(p2Run2);
-
-        }
-        else if (frame == 3)
-        {
-            setImage(p2Run3);
-        }
-        else if (frame == 4)
-        {
-            setImage(p2Run4);
-        }
-        else if (frame == 5)
-        {
-            setImage(p2Run5);
-        }
-        else if (frame == 6)
-        {
-            setImage(p2Run6);
-        }
-        else if (frame == 7)
-        {
-            setImage(p2Run7);
-        }
-        else if (frame == 8)
-        {
-            setImage(p2Run8);
-        }
-        else if (frame == 9)
-        {
-            setImage(p2Run9);
-        }
-        else if (frame == 10)
-        {
-            setImage (p2Run10);
-
-            frame = 0;
-            return;
-        }
-        getImage().scale(width, height);
-        frame ++;
-        break;
-        case 3:    
-        if(frame == 1)
-        {
-            setImage(p3Run1);
-
-        }
-        else if (frame == 2)
-        {
-            setImage(p3Run2);
-
-        }
-        else if (frame == 3)
-        {
-            setImage(p3Run3);
-            
-        }
-        else if (frame == 4)
-        {
-            setImage(p3Run4);
-            
-        }
-        else if (frame == 5)
-        {
-            setImage(p3Run5);
-            
-        }
-        else if (frame == 6)
-        {
-            setImage(p3Run6);
-            
-        }
-        else if (frame == 7)
-        {
-            setImage(p3Run7);
-            
-        }
-        else if (frame == 8)
-        {
-            setImage(p3Run8);
-            
-        }
-        else if (frame == 9)
-        {
-            setImage(p3Run9);
-            
-        }
-        else if (frame == 10)
-        {
-            setImage (p3Run10);
-
-            frame = 0;
-            return;
-        }
-        frame ++;
-        break;
-    }
-}
-    public void handleInput() {
-        if (Greenfoot.isKeyDown("space")) {
-            for (Actor enemy : getIntersectingObjects(Tile.class)) {
-            if(inLevel == true){
-                if (enemy != null) {
-                    Music.jump.play();
-                    velocityY = -15;
-                    return;
-                }
             }
+            else if (frame == 2)
+            {
+                setImage(run2);
+
+            }
+            else if (frame == 3)
+            {
+                setImage(run3);
+            }
+            else if (frame == 4)
+            {
+                setImage(run4);
+            }
+            else if (frame == 5)
+            {
+                setImage(run5);
+            }
+            else if (frame == 6)
+            {
+                setImage(run6);
+            }
+            else if (frame == 7)
+            {
+                setImage(run7);
+            }
+            else if (frame == 8)
+            {
+                setImage(run8);
+            }
+            else if (frame == 9)
+            {
+                setImage(run9);
+            }
+            else if (frame == 10)
+            {
+                setImage (run10);
+
+                frame = 0;
+                return;
+            }
+            frame ++;
+            break;
+            case 2:    
+            if(frame == 1)
+            {
+                setImage(p2Run1);
+
+            }
+            else if (frame == 2)
+            {
+                setImage(p2Run2);
+
+            }
+            else if (frame == 3)
+            {
+                setImage(p2Run3);
+            }
+            else if (frame == 4)
+            {
+                setImage(p2Run4);
+            }
+            else if (frame == 5)
+            {
+                setImage(p2Run5);
+            }
+            else if (frame == 6)
+            {
+                setImage(p2Run6);
+            }
+            else if (frame == 7)
+            {
+                setImage(p2Run7);
+            }
+            else if (frame == 8)
+            {
+                setImage(p2Run8);
+            }
+            else if (frame == 9)
+            {
+                setImage(p2Run9);
+            }
+            else if (frame == 10)
+            {
+                setImage (p2Run10);
+
+                frame = 0;
+                return;
+            }
+            getImage().scale(width, height);
+            frame ++;
+            break;
+            case 3:    
+            if(frame == 1)
+            {
+                setImage(p3Run1);
+
+            }
+            else if (frame == 2)
+            {
+                setImage(p3Run2);
+
+            }
+            else if (frame == 3)
+            {
+                setImage(p3Run3);
+
+            }
+            else if (frame == 4)
+            {
+                setImage(p3Run4);
+
+            }
+            else if (frame == 5)
+            {
+                setImage(p3Run5);
+
+            }
+            else if (frame == 6)
+            {
+                setImage(p3Run6);
+
+            }
+            else if (frame == 7)
+            {
+                setImage(p3Run7);
+
+            }
+            else if (frame == 8)
+            {
+                setImage(p3Run8);
+
+            }
+            else if (frame == 9)
+            {
+                setImage(p3Run9);
+
+            }
+            else if (frame == 10)
+            {
+                setImage (p3Run10);
+
+                frame = 0;
+                return;
+            }
+            frame ++;
+            break;
         }
+    }
+
+    public void handleInput() {
+        if(onGround() == true){
+            if (Greenfoot.isKeyDown("space")) {
+                Music.jump.play();
+                velocityY = -15;
+                return;
+
+            }
         }
         if (Greenfoot.isKeyDown("left")) {
             velocityX = -6;
