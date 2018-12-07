@@ -3,7 +3,7 @@ import javax.swing.JOptionPane;
 import greenfoot.*;
 
 public class MyWorld extends World {
-    private static final boolean debug = true;
+    private static final boolean debug = false;
     private static int level = 1;
     private static int maxLevel = 1;
     private static int player = 1;
