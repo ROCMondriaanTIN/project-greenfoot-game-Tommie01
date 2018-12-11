@@ -6,7 +6,7 @@ import greenfoot.*;
  */
 public class Hero extends Mover {
     public static boolean inLevel = false;
-    private static  double gravity;
+    private final double gravity;
     private final double acc;
     private final double drag;
     private static int cntr = 0;
@@ -151,7 +151,6 @@ public class Hero extends Mover {
         if(isTouching(Key.class)){
             removeTouching(Key.class);
             hasKey = true;
-            Music.key.setVolume(100);
             Music.key.play();
         }
         if(isTouching(GoldCoin.class)){
@@ -205,17 +204,13 @@ public class Hero extends Mover {
         }
     }
 
+<<<<<<< HEAD
     public void platformCollision(){
         if(isTouching(Platform.class)){
-            gravity = 0;
-            onGround = true;
-        }
-        else if(isTouching(PlatformY.class)){
             setLocation(getX(), getY() - 11);
             onGround = true;
         }
         else{
-            gravity = 9.8;
             onGround = false;
         }
     }
@@ -587,6 +582,25 @@ public class Hero extends Mover {
                 case 3: animatieRight();
                 break;
             }
+=======
+    public void handleInput() {
+        if (Greenfoot.isKeyDown("w")) {
+            if (isOnGround) {
+                velocityY = -17;
+                animationJump(getWidth(), getHeight(), 2);
+            }
+        }
+        if (Greenfoot.isKeyDown("a")) {
+            velocityX = -5;
+            direction = "left";
+            animationWalk(getWidth(), getHeight(), player);
+        } else if (Greenfoot.isKeyDown("d")) {
+            velocityX = 5;
+            direction = "right";
+            animationWalk(getWidth(), getHeight(), player);
+        } else {
+            animationStand(getWidth(), getHeight(), player);
+>>>>>>> 4a4cbd06505c14f713bfe4c613217d6161f8ac8d
         }
     }
 

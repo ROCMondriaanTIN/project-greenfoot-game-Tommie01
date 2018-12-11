@@ -1,7 +1,7 @@
 
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class Platform extends Mover
+public class PlatformY extends Mover
 {   
     private int walkRange;
     private int yMin;
@@ -12,7 +12,7 @@ public class Platform extends Mover
     private int speed;
     private int getal;
 
-    public Platform(int walkrange){
+    public PlatformY(int walkrange){
         setImage("platform2.png");
         this.walkRange = walkrange; //default 250
         this.getal = getal;
@@ -29,21 +29,19 @@ public class Platform extends Mover
         int x = getX();
         int y = getY();
 
-
         if (firstAct) {
             firstAct = false;
-            xMin = x - walkRange / 2;
-            xMax = x + walkRange / 2;
+            yMin = y - walkRange / 2;
+            yMax = y + walkRange / 2;
         }
-
-        velocityX = speed;
+        velocityY = speed;
         applyVelocity();
-        if (getX() <= xMin) {
+        if (getY() >= yMax) {
             speed *= -1;
-            x = xMax;
-        } else if (getX() >= xMax) {
+            y = yMax;
+        } else if (getY() <= yMin) {
             speed *= -1;
-            x = xMin;
+            y = yMin;
         }
     }
 }

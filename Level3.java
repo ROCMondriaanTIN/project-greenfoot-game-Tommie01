@@ -65,8 +65,8 @@ public class Level3 extends MyWorld
         ce = new CollisionEngine(te, camera);
         ce.addCollidingMover(hero);
         addObject(hero, 300, 900); 
-        addObject(new Platform(1700, 0), 1487, 1690);
-        addObject(new Platform(700, 1), 2292, 1233);
+        addObject(new Platform(1700), 1487, 1690);
+        addObject(new PlatformY(700), 2292, 1233);
         addObject(new Key(), 1191, 1452);
         if(Hero.diamonds != 3){
             addObject(new Diamond(), 3512, 312);
@@ -74,9 +74,9 @@ public class Level3 extends MyWorld
         addObject(new GoldCoin(), 2504, 552);
         addObject(new GoldCoin(), 1826, 1092);
         addObject(new SilverCoin(), 1728, 1605);
-        addObject(new SilverCoin(), 539, 612);
+        addObject(new GoldCoin(), 539, 612);
         addObject(new SilverCoin(), 905, 432);
-        addObject(new SilverCoin(), 905, 432);
+        addObject(new GoldCoin(), 905, 432);
         addObject(new Enemy(), 1247, 885);
         addObject(new Enemy(), 1579, 585);
         hud();

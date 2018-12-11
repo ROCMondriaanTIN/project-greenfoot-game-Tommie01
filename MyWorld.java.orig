@@ -1,4 +1,3 @@
- 
 
 import javax.swing.JOptionPane;
 import greenfoot.*;
@@ -25,19 +24,62 @@ public class MyWorld extends World {
 
     public MyWorld() {
         super(1000, 800, 1, false);
-        Greenfoot.start();
+        //Greenfoot.start();
         startScreen();
         Hero.inLevel = false;
-        levens = 2;
-        if(debug == true){
-            Hero.diamonds = 5;
-            levens = 20;
-            maxLevel = 4;
-            
-            
-        }
     }
 
+<<<<<<< HEAD
+=======
+        int[][] map = {
+            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 3, -1, -1, 12, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 4, -1, -1, 7, 8, 9, 5, 5, 5, 5, 5, 5, 5, 5, 7, 8, 8, 8, 8, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, 14, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, 8, 8, 8, 8, -1, -1, -1, -1, -1, 14, -1, -1, 7, 8, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, 6, 6, 6, 6, -1, -1, -1, -1, 7, 8, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 7, 8, 8, 8, 8, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6, -1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, 6, 6, 6, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 7, 8, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 7, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {11, 11, 6, 6, 6, 6, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {10, 10, 6, 6, 6, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 6, 8, 8, 9, 11, 11, 11, 11, 11, 11, 11, 11, 11},
+            {10, 10, 6, 6, 6, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
+            {10, 10, 6, 6, 6, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
+            {10, 10, 6, 6, 6, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
+            {10, 10, 6, 6, 6, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
+        };
+
+        // Declareren en initialiseren van de TileEngine klasse om de map aan de world toe te voegen
+        TileEngine te = new TileEngine(this, 60, 60, map);
+        // Declarenre en initialiseren van de camera klasse met de TileEngine klasse 
+        // zodat de camera weet welke tiles allemaal moeten meebewegen met de camera
+        Camera camera = new Camera(te);
+        
+        // Initialiseren van de CollisionEngine zodat de speler niet door de tile heen kan lopen.
+        // De collision engine kijkt alleen naar de tiles die de variabele solid op true hebben staan.
+        ce = new CollisionEngine(te, camera);
+       
+        // Declareren en initialiseren van een main karakter van het spel mijne heet Hero. Deze klasse 
+        // moet de klasse Mover extenden voor de camera om te werken
+        Hero hero = new Hero();
+
+        // Laat de camera een object volgen. Die moet een Mover instatie zijn of een extentie hiervan.
+        camera.follow(hero);
+
+        // Alle objecten toevoegen aan de wereld: camera, main karakter en mogelijke enemies
+        addObject(camera, 0, 0);
+        addObject(hero, 300, 200);
+        addObject(new Enemy(), 1170, 410);
+        
+
+        // Toevoegen van de mover instantie of een extentie hiervan
+        ce.addCollidingMover(hero);
+
+        hero.act();
+        camera.act();
+    }
+        
+>>>>>>> 4a4cbd06505c14f713bfe4c613217d6161f8ac8d
     @Override
     public void act() {
         buttons();
@@ -204,23 +246,11 @@ public class MyWorld extends World {
                     clearScreen();
                     setBackground("gameClear.png");
                     Music.worldClear.play();
-                    if(Hero.diamonds == 4){
-                        addObject(new Text("Gefeliciteerd je hebt alle verborgen diamanten gevonden!" , Color.WHITE), 500, 770);
-                    }
-                    else if(Hero.diamonds > 0){
-                        addObject(new Text("Gefeliciteerd je hebt " + Hero.diamonds + " diamanten gevonden, helaas hebt je er " 
-                        + (4 - Hero.diamonds) + " gemist.", Color.WHITE), 500, 770);
-                    }
-                    else{
-                        addObject(new Text("Helaas heb je geen verborgen diamanten gevonden, volgende keer beter!" , Color.WHITE), 500, 770);
-                    }
-                    if(Hero.diamonds > 0){
-                    addObject(new DiamondBox(), 120, 650);
-                }
                 }
                 else{
                     clearScreen();
                     Hero.isTouchingDoor = false;
+                    levens = 2;
                     if(level <= 3){
                         level ++;
                     }
@@ -313,7 +343,7 @@ public class MyWorld extends World {
 
     public void characterMenu(){
         this.setBackground("bg.png");
-        addObject(new Text("Kies een personage:"), 150, 400);
+        showText("Kies een speler", 100, 400);
         addObject(h1, 100, 500);
         addObject(h2, 100, 700);
         addObject(h3, 400, 500);
@@ -346,7 +376,8 @@ public class MyWorld extends World {
         removeObjects(getObjects(Diamond.class));
         removeObjects(getObjects(HUDDiamond.class));
         removeObjects(getObjects(Fireball.class));
-        removeObjects(getObjects(Text.class));
+        showText("", 100, 500);
+        showText("", 100, 400);
     }
 
     public void levelSelector(){
@@ -354,7 +385,7 @@ public class MyWorld extends World {
         if(debug == true){
             addObject(debugLvlBtn, 100, 300);
         }
-        addObject(new Text("Kies een level:"), 100, 500);
+        showText("Kies een level", 100, 500);
         addObject(lvl1Btn, 100, 600);
         addObject(lvl2Btn, 100, 700);
         addObject(lvl3Btn, 300, 600);

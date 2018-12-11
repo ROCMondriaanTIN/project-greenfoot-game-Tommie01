@@ -62,12 +62,12 @@ public class Level2 extends MyWorld
         ce = new CollisionEngine(te, camera);
         ce.addCollidingMover(hero);
         addObject(hero, 300, 900);
-        addObject(new Platform(250, 1), 500, 900);
-        addObject(new Platform(450, 1), 1061,900);
+        addObject(new PlatformY(250), 500, 900);
+        addObject(new PlatformY(450), 1061,900);
         addObject(new Key(), 2813,1212);
-        addObject(new SilverCoin(), 765,612);
+        addObject(new GoldCoin(), 765,612);
         addObject(new SilverCoin(), 1427,1092);
-        addObject(new SilverCoin(), 405, 192);
+        addObject(new GoldCoin(), 405, 192);
         addObject(new SilverCoin(), 1390,132);
         addObject(new GoldCoin(), 2889,612);
         addObject(new GoldCoin(), 1836,612);

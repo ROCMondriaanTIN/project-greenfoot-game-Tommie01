@@ -68,9 +68,9 @@ public class Level1 extends MyWorld
         }
         addObject(new Key(), 180, 550);
         addObject(new Fireball(), 843,880);
-        addObject(new SilverCoin(), 1135,1212);
+        addObject(new GoldCoin(), 1135,1212);
         addObject(new SilverCoin(), 1741,852);
-        addObject(new SilverCoin(), 1323,672);
+        addObject(new GoldCoin(), 1323,672);
         addObject(new SilverCoin(), 895,492);
         addObject(new GoldCoin(), 2191,672);
         addObject(new GoldCoin(), 2487,852);
