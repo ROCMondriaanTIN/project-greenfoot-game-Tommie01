@@ -33,8 +33,6 @@ public class MyWorld extends World {
             Hero.diamonds = 5;
             levens = 20;
             maxLevel = 4;
-            
-            
         }
     }
 
